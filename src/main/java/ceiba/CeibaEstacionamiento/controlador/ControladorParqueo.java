@@ -20,7 +20,7 @@ import ceiba.CeibaEstacionamiento.dominio.repositorio.RepositorioVehiculo;
 
 @RestController
 @RequestMapping("/ceiba")
-public class ControladorVehiculo {
+public class ControladorParqueo {
 
 	Parqueadero parqueadero = new Parqueadero();
 	
@@ -29,10 +29,8 @@ public class ControladorVehiculo {
 
     // Registrar ingreso de un vehiculo - POST
 	@PostMapping("/vehiculos")
-	public Vehiculo registrarVehiculo(@RequestBody Vehiculo vehiculo) {
-		vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
-		System.out.println(vehiculo.getPlaca());
-		return vehiculo;
+	public String registrarVehiculo(@RequestBody Vehiculo vehiculo) {
+		return vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);		
 	}
 	
 	// Obtener todos los vehiculos - GET
