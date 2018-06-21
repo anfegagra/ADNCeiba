@@ -22,7 +22,8 @@ import ceiba.CeibaEstacionamiento.dominio.repositorio.RepositorioVehiculo;
 @RequestMapping("/ceiba")
 public class ControladorParqueo {
 
-	Parqueadero parqueadero = new Parqueadero();
+	@Autowired
+	Parqueadero parqueadero;
 	
 	@Autowired
 	Vigilante vigilante;	

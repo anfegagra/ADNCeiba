@@ -13,16 +13,16 @@ import ceiba.CeibaEstacionamiento.controlador.Crud;
 public class Vigilante {
 	
 	public static final String VALIDACION_PLACA_CARRO = "Verifique la placa del carro";
-	public static final String VALIDACION_CILINDRAJE_MOTO = "Verifique el cilindraje de la moto";
+	public static final String VALIDACION_CAMPOS_MOTO = "Verifique el cilindraje o placa de la moto";
 	public static final String VALIDACION_PLACA_MOTO = "Verifique la placa de la moto";
 
 	@Autowired
 	Crud crud;
 		    
     public String registrarIngresoVehiculo(Vehiculo vehiculo, Parqueadero parqueadero){
-    	System.out.println(vehiculo.getPlaca());
-    	System.out.println(parqueadero.getCeldasDisponiblesCarro());
-    	System.out.println("Valor cilindraje: " + vehiculo.getCilindraje());
+    	//System.out.println(vehiculo.getPlaca());
+    	//System.out.println(parqueadero.getCeldasDisponiblesCarro());
+    	//System.out.println("Valor cilindraje: " + vehiculo.getCilindraje());
     	
     	/*if(vehiculo.getCilindraje() == 0){
     		System.out.println("Tipo: " + vehiculo.getTipo());
@@ -43,10 +43,10 @@ public class Vigilante {
     			Vehiculo vehiculoAIngresar = new Carro(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
     			return hacerValidaciones(vehiculoAIngresar, parqueadero);    			
     		}
-    	}else if(vehiculo.getCilindraje() == 0){
+    	}else if(vehiculo.getCilindraje() == 0 || vehiculo.getPlaca().equals("")){
     		System.out.println("Tipo: " + vehiculo.getTipo());    		
     		System.out.println("Verifique el cilindraje de la moto");
-    		return VALIDACION_CILINDRAJE_MOTO;
+    		return VALIDACION_CAMPOS_MOTO;
     	}else{
     		System.out.println("Nueva moto");
 			Vehiculo vehiculoAIngresar = new Moto(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
@@ -55,23 +55,23 @@ public class Vigilante {
 	}
     
     public String hacerValidaciones(Vehiculo v, Parqueadero p){
-		System.out.println("hola");
-		if(esPlacaValida(v.getPlaca()) && p.hayCeldaDisponible(v.getTipo())){
+		//System.out.println("hola");
+		if(esPlacaValida(v.getPlaca())){
 			System.out.println("Puede ingresar");
 			//System.out.println(date);
 			//System.out.println(n);
-			if(v.getTipo().equals("C")){
+			/*if(v.getTipo().equals("C")){
 				p.setCeldasDisponiblesCarro(p.getCeldasDisponiblesCarro()-1);
 			}else if(v.getTipo().equals("M")){
 				p.setCeldasDisponiblesMoto(p.getCeldasDisponiblesMoto()-1);
-			}
+			}*/
 			
 			// Validar si ya esta en el parqueadero
-			return crud.registrarVehiculo(v);			
+			return crud.registrarVehiculo(v, p);			
 			
 		}else{
 			System.out.println("No puede ingresar");
-			return crud.registrarVehiculo(v);
+			return crud.registrarVehiculo(v, p);
 		}
 	}
 	
