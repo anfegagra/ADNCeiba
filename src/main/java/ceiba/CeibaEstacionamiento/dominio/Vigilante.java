@@ -14,41 +14,52 @@ public class Vigilante {
 
 	@Autowired
 	Crud crud;
-	//Vehiculo vehiculo;
-	
-	/*Calendar calendar = Calendar.getInstance();
-    Date date =  calendar.getTime();
-    int n = calendar.get(Calendar.DAY_OF_WEEK);*/
-
-	/*public void registrarIngresoVehiculo(Vehiculo vehiculo, String fecha){
-		if(esPlacaValida(vehiculo, fecha) && parqueadero.hayCeldaDisponible(vehiculo.getTipo())){
-			System.out.println("Puede ingresar");
-			//System.out.println(date);
-			//System.out.println(n);
-			if(vehiculo.getTipo() == "C"){
-				parqueadero.setCeldasDisponiblesCarro(parqueadero.getCeldasDisponiblesCarro()-1);
-			}else if(vehiculo.getTipo() == "M"){
-				parqueadero.setCeldasDisponiblesMoto(parqueadero.getCeldasDisponiblesMoto()-1);
-			}
-			
-		}else{
-			System.out.println("No puede ingresar");
-		}
-	}*/
-    
+		    
     public void registrarIngresoVehiculo(Vehiculo vehiculo, Parqueadero parqueadero){
     	System.out.println(vehiculo.getPlaca());
     	System.out.println(parqueadero.getCeldasDisponiblesCarro());
-		if(esPlacaValida(vehiculo.getPlaca()) && parqueadero.hayCeldaDisponible(vehiculo.getTipo())){
+    	System.out.println("Valor cilindraje: " + vehiculo.getCilindraje());
+    	
+    	/*if(vehiculo.getCilindraje() == 0){
+    		System.out.println("Tipo: " + vehiculo.getTipo());
+    		if(vehiculo.getTipo().equals("M")){
+    			System.out.println("Verifique el cilindraje de la moto");
+    		}else{
+    			Vehiculo vehiculoAIngresar = new Carro(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
+    		}
+    		
+    	}*/
+    	
+    	if(vehiculo.getTipo().equals("C")){
+    		if(vehiculo.getPlaca().equals("")){
+    			System.out.println("Verifique la placa del carro");
+    		}else{
+    			System.out.println("Nuevo carro");
+    			Vehiculo vehiculoAIngresar = new Carro(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
+    			hacerValidaciones(vehiculoAIngresar, parqueadero);
+    		}
+    	}else if(vehiculo.getCilindraje() == 0){
+    		System.out.println("Tipo: " + vehiculo.getTipo());    		
+    		System.out.println("Verifique el cilindraje de la moto");
+    	}else{
+    		System.out.println("Nueva moto");
+			Vehiculo vehiculoAIngresar = new Moto(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
+			hacerValidaciones(vehiculoAIngresar, parqueadero);
+		}		
+	}
+    
+    public void hacerValidaciones(Vehiculo v, Parqueadero p){
+		System.out.println("hola");
+		if(esPlacaValida(v.getPlaca()) && p.hayCeldaDisponible(v.getTipo())){
 			System.out.println("Puede ingresar");
 			//System.out.println(date);
 			//System.out.println(n);
-			if(vehiculo.getTipo() == "C"){
-				parqueadero.setCeldasDisponiblesCarro(parqueadero.getCeldasDisponiblesCarro()-1);
-			}else if(vehiculo.getTipo() == "M"){
-				parqueadero.setCeldasDisponiblesMoto(parqueadero.getCeldasDisponiblesMoto()-1);
+			if(v.getTipo().equals("C")){
+				p.setCeldasDisponiblesCarro(p.getCeldasDisponiblesCarro()-1);
+			}else if(v.getTipo().equals("M")){
+				p.setCeldasDisponiblesMoto(p.getCeldasDisponiblesMoto()-1);
 			}
-			crud.registrarVehiculo(vehiculo);
+			crud.registrarVehiculo(v);
 			
 		}else{
 			System.out.println("No puede ingresar");
@@ -69,19 +80,6 @@ public class Vigilante {
 		
 	}
 	
-	/*public boolean esPlacaValida(Vehiculo vehiculo){
-		String placa = vehiculo.getPlaca().substring(0, 1);
-		int dia = calendar.get(Calendar.DAY_OF_WEEK);
-		if(placa.equals("A")){
-			if(dia == 1 || dia == 2){
-				return true;
-			}
-			return false;
-		}else{
-			return true;
-		}
-	}*/
-	
 	public boolean esPlacaValida(String placa){
 		String primeraLetraPlaca = placa.substring(0, 1);
 		Calendar calendar = Calendar.getInstance();	    
@@ -95,68 +93,5 @@ public class Vigilante {
 			return true;
 		}
 	}
-	
-	/*public boolean esPlacaValida(Vehiculo vehiculo, String fecha){
-		String placa = vehiculo.getPlaca().substring(0, 1);
-		if(placa.equals("A")){
-			//Fecha fecha = new Fecha(dia);
-			int dia = 0;
-			switch (fecha) {
-			case "LUNES":
-				dia = 2;
-				break;
-				
-			case "MARTES":
-				dia = 3;
-				break;
-				
-			case "MIERCOLES":
-				dia = 4;
-				break;
-				
-			case "JUEVES":
-				dia = 5;
-				break;
-				
-			case "VIERNES":
-				dia = 6;
-				break;
-				
-			case "SABADO":
-				dia = 7;
-				break;
-				
-			case "DOMINGO":
-				dia = 1;
-				break;
-				
-			default:
-				break;
-			}
-			
-			if(esDiaValido(dia)){
-				return true;
-			}else{
-				return false;
-			}
-			
-		}else{
-			return true;
-		}
-	}*/
-	
-	public boolean esDiaValido(int dia) {
-		if (dia == 1 || dia == 2){
-			return true;
-		}
-		return false;		
-	}
-	
-	/*public boolean esDiaValido(String dia) {
-		if (dia.equals("DOMINGO") || dia.equals("LUNES")){
-			return true;
-		}
-		return false;		
-	}*/
 	
 }

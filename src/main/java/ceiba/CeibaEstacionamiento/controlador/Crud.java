@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ceiba.CeibaEstacionamiento.dominio.Parqueadero;
 import ceiba.CeibaEstacionamiento.dominio.Vehiculo;
 import ceiba.CeibaEstacionamiento.dominio.repositorio.RepositorioVehiculo;
+import ceiba.CeibaEstacionamiento.modelo.ModeloVehiculo;
 
 @Service
 @RestController
@@ -22,14 +23,20 @@ import ceiba.CeibaEstacionamiento.dominio.repositorio.RepositorioVehiculo;
 public class Crud {
 	
 	@Autowired
-    RepositorioVehiculo repositorioVehiculo;
+    RepositorioVehiculo repositorioVehiculo;	
 	
-	public Vehiculo registrarVehiculo(Vehiculo vehiculo) {
+	public ModeloVehiculo registrarVehiculo(Vehiculo vehiculo) {
+		ModeloVehiculo modeloVehiculo = new ModeloVehiculo(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje(), 
+				vehiculo.getEstado());
 		System.out.println(vehiculo.getPlaca());
-	    return repositorioVehiculo.save(vehiculo);
+		/*modeloVehiculo.setPlaca(vehiculo.getPlaca());
+		modeloVehiculo.setCilindraje(vehiculo.getCilindraje());
+		modeloVehiculo.setTipo(vehiculo.getTipo());
+		modeloVehiculo.setEstado(vehiculo.getEstado());*/
+	    return repositorioVehiculo.save(modeloVehiculo);
 	}
 	
-	// Obtener todos los vehiculos - GET
+	/*// Obtener todos los vehiculos - GET
 	@GetMapping("/vehiculos")
 	public List<Vehiculo> obtenerVehiculos() {
 	    return repositorioVehiculo.findAll();
@@ -53,6 +60,6 @@ public class Crud {
 
 	    Vehiculo vehiculoActualizado = repositorioVehiculo.save(vehiculo);
 	    return vehiculoActualizado;
-	}
+	}*/
 	
 }
