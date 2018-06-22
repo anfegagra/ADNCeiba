@@ -1,6 +1,7 @@
 package ceiba.CeibaEstacionamiento.dominio;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -19,6 +20,13 @@ public class Vehiculo{
 	//private Date horaIngreso;
 	//private Date horaSalida;
 	private String estado = "Activo";
+	
+	private Date fechaIngreso;
+	
+	@Autowired
+	public Vehiculo(){
+		
+	}
 	
 	public Vehiculo(String placa, String tipo, int cilindraje) {
 		this.placa = placa;

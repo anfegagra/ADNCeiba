@@ -47,6 +47,11 @@ public class Vigilante {
 		}
 		return vehiculo;
 	}
+	
+	public Vehiculo registrarSalidaVehiculo(){
+		
+		return null;
+	}
 
 	public void cobrar() {
 

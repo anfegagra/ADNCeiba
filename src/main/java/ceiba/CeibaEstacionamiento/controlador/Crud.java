@@ -1,5 +1,8 @@
 package ceiba.CeibaEstacionamiento.controlador;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,8 +111,11 @@ public class Crud {
 		int cantidad = 0;
 		for (ModeloVehiculo listaFinal : lista) {
 
+			
+			
 			System.out.println(listaFinal.getPlaca());
-
+			
+			
 			if (listaFinal.getEstado().equals("Activo")) {
 				cantidad += 1;
 			}
@@ -137,6 +143,33 @@ public class Crud {
 
 		ModeloVehiculo vehiculoActualizado = repositorioVehiculo.save(mVehiculo);
 		return vehiculoActualizado;
+	}
+	
+	@PutMapping("vehiculos/salida/{placa}")
+	public ModeloVehiculo registrarSalidaVehiculoYCobrar(@PathVariable(value = "placa") String placa,
+			@RequestBody Vehiculo detallesVehiculo){
+		
+		ModeloVehiculo mVehiculo = repositorioVehiculo.findById(placa).orElse(null);
+
+		mVehiculo.setEstado("Inactivo");
+
+		ModeloVehiculo vehiculoActualizado = repositorioVehiculo.save(mVehiculo);
+		return vehiculoActualizado;
+		
+		
+		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.mmm");
+		
+		Date mili = listaFinal.getFechaIngreso();
+		System.out.println("Tiempo bd en Date: " + mili);
+		System.out.println("Tiempo bd en mili: " + mili.getTime());
+		System.out.println("Tiempo bd en mili: " + sdf.format(mili.getTime()));
+
+		Date date = new Date();
+		System.out.println("Tiempo nuevo en Date: " + date);
+		String otro = sdf.format(date.getTime());
+		System.out.println("Tiempo nuevo en mili: " + sdf.format(date.getTime()));
+		Timestamp timpestamp = new Timestamp(date.getTime());*/
+		
 	}
 
 	public boolean validarCeldasDisponiblesMoto(Vehiculo vehiculo, Parqueadero parqueadero) {

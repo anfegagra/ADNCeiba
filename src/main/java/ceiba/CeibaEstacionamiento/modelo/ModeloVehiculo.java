@@ -1,14 +1,18 @@
 package ceiba.CeibaEstacionamiento.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -28,6 +32,10 @@ public class ModeloVehiculo implements Serializable{
 	//private Date horaSalida;
 	@Column(name="estado")
 	private String estado = "Activo";
+	
+	@Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+	private Date fechaIngreso;
 	
 	@Autowired
 	public ModeloVehiculo() {
@@ -72,5 +80,15 @@ public class ModeloVehiculo implements Serializable{
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
+	public Date getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	public void setFechaIngreso(Date fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+	
+	
 		
 }
