@@ -31,6 +31,12 @@ public class Vigilante {
 
 	public Vehiculo hacerValidaciones(Vehiculo v, Parqueadero p) {
 		Vehiculo vehiculo = null;
+		String letras = v.getPlaca().substring(0,3).toUpperCase();
+		String numeros = v.getPlaca().substring(3,6);
+		String placaActualizada = letras+numeros;
+		System.out.println(v.getPlaca());
+		v.setPlaca(placaActualizada);
+		System.out.println(v.getPlaca());
 		if (esPlacaValida(v.getPlaca())) {
 			if (v.getTipo().equals("C") && crud.validarCeldasDisponiblesCarro(v, p)) {
 				vehiculo = crud.registrarVehiculo(v, p);

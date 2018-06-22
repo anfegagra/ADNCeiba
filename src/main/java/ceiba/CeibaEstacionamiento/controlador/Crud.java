@@ -34,10 +34,22 @@ public class Crud {
 		ModeloVehiculo resultadoInsercion = null;
 		System.out.println(vehiculo.getPlaca());
 
-		if (obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca()) != null) {
-			System.out.println("ya existe vehiculo");
-			return null;
-
+		if(obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca()) != null) {
+			
+			ModeloVehiculo vehiculoActualizado = obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca());
+			if(vehiculoActualizado.getEstado().equals("Inactivo")){
+				//System.out.println(vehiculoActualizado.getEstado());
+				//System.out.println("------------------------");
+				vehiculoActualizado.setEstado("Activo");
+				//System.out.println(vehiculoActualizado.getEstado());
+				resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
+				//resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
+				return convertirADominio(resultadoInsercion);
+			} else {
+				System.out.println("ya existe vehiculo");
+				return null;
+			}			
+			
 		} else {
 
 			// if(vehiculo.getTipo().equals("C")){
