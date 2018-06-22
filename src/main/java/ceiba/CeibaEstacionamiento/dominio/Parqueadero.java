@@ -42,7 +42,7 @@ public class Parqueadero {
 				System.out.println("No hay celdas de carro disponibles");
 				return false;
 			}*/
-			int ocupadas = crud.verCeldasDisponibles(tipoVehiculo);
+			int ocupadas = crud.obtenerCantidadCeldasDisponibles(tipoVehiculo);
 			System.out.println("ocupadas: " + ocupadas);
 			int totalDisponibles = (celdasDisponiblesCarro - ocupadas);
 			
@@ -63,7 +63,7 @@ public class Parqueadero {
 				return false;
 			}*/
 			
-			int ocupadas = crud.verCeldasDisponibles(tipoVehiculo);
+			int ocupadas = crud.obtenerCantidadCeldasDisponibles(tipoVehiculo);
 			System.out.println("ocupadas: " + ocupadas);
 			int totalDisponibles = (celdasDisponiblesMoto - ocupadas);
 			
