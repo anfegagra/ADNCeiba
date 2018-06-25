@@ -32,7 +32,7 @@ public class Parqueadero {
 		this.celdasDisponiblesMoto = celdasDisponiblesMoto;
 	}
 	
-	public boolean hayCeldaDisponible(String tipoVehiculo) {
+	/*public boolean hayCeldaDisponible(String tipoVehiculo) {
 		
 		if(tipoVehiculo.equals("C")){
 			/*if(celdasDisponiblesCarro > 0){
@@ -41,7 +41,7 @@ public class Parqueadero {
 			}else{
 				System.out.println("No hay celdas de carro disponibles");
 				return false;
-			}*/
+			}
 			int ocupadas = crud.obtenerCantidadCeldasDisponibles(tipoVehiculo);
 			System.out.println("ocupadas: " + ocupadas);
 			int totalDisponibles = (celdasDisponiblesCarro - ocupadas);
@@ -61,7 +61,7 @@ public class Parqueadero {
 			}else{
 				System.out.println("No hay celdas de moto disponibles");
 				return false;
-			}*/
+			}
 			
 			int ocupadas = crud.obtenerCantidadCeldasDisponibles(tipoVehiculo);
 			System.out.println("ocupadas: " + ocupadas);
@@ -76,5 +76,5 @@ public class Parqueadero {
 			}
 		}
 		
-	}
+	}*/
 }

@@ -2,9 +2,12 @@ package ceiba.CeibaEstacionamiento.controlador;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +47,8 @@ public class Crud {
 				//System.out.println(vehiculoActualizado.getEstado());
 				//System.out.println("------------------------");
 				vehiculoActualizado.setEstado("Activo");
+				DateTime dt = new DateTime();
+				vehiculoActualizado.setFechaIngreso(dt.toDate());
 				//System.out.println(vehiculoActualizado.getEstado());
 				resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
 				//resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
@@ -65,6 +70,37 @@ public class Crud {
 			// }
 			resultadoInsercion = repositorioVehiculo.save(modeloVehiculo);
 			return convertirADominio(resultadoInsercion);
+		}
+	}
+	
+	public Vehiculo registrarSalida(String placa, Parqueadero parqueadero) {
+		ModeloVehiculo modeloVehiculo = obtenerVehiculoPorPlaca(placa);
+		ModeloVehiculo resultadoSalida = null;
+		System.out.println("vehiculo = " + modeloVehiculo.getPlaca());
+		
+		if(modeloVehiculo != null) {
+			
+			if(modeloVehiculo.getEstado().equals("Inactivo")){
+				System.out.println("El vehiculo no se encuentra en el parqueadero");
+				return null;
+				
+			} else {
+				System.out.println("Se registro la salida del vehiculo");
+				modeloVehiculo.setEstado("Inactivo");
+				resultadoSalida = repositorioVehiculo.save(modeloVehiculo);
+				
+				if(modeloVehiculo.getPlaca().equals("C")) {
+					parqueadero.setCeldasDisponiblesCarro(parqueadero.getCeldasDisponiblesCarro()+1);
+				} else {
+					parqueadero.setCeldasDisponiblesMoto(parqueadero.getCeldasDisponiblesMoto()+1);
+				}
+				
+				System.out.println("vehiculo salida = " + resultadoSalida.getPlaca());
+				return convertirADominio(resultadoSalida);				
+			}			
+			
+		} else {
+			return null;
 		}
 	}
 
@@ -113,7 +149,27 @@ public class Crud {
 
 			
 			
-			System.out.println(listaFinal.getPlaca());
+			/*System.out.println(listaFinal.getPlaca());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.mmm");
+			
+			Date mili = listaFinal.getFechaIngreso();
+			System.out.println("Tiempo bd en Date: " + mili);
+			System.out.println("Tiempo bd en mili: " + mili.getTime());
+			System.out.println("Tiempo bd en mili: " + sdf.format(mili.getTime()));
+
+			Date date = new Date();
+			System.out.println("Tiempo nuevo en Date: " + date);
+			String otro = sdf.format(date.getTime());
+			System.out.println("Tiempo nuevo en mili: " + sdf.format(date.getTime()));
+			Timestamp timpestamp = new Timestamp(date.getTime());
+			
+			DateTime datet = new DateTime();
+			System.out.println("-----" + datet);
+			Date jdkDate = datet.toDate();
+			System.out.println("-----" + jdkDate);
+			DateTime dtInicial = new DateTime(mili);
+			Days diff = Days.daysBetween(dtInicial, datet);
+			System.out.println("Diferencia de dias: " + diff.plus(2).getDays());*/
 			
 			
 			if (listaFinal.getEstado().equals("Activo")) {
@@ -133,7 +189,7 @@ public class Crud {
 	}
 
 	// Registrar salida de un vehiculo - PUT
-	@PutMapping("/vehiculos/{placa}")
+	/*@PutMapping("/vehiculos/{placa}")
 	public ModeloVehiculo registrarSalidaVehiculo(@PathVariable(value = "placa") String placa,
 			@RequestBody Vehiculo detallesVehiculo) {
 
@@ -143,9 +199,9 @@ public class Crud {
 
 		ModeloVehiculo vehiculoActualizado = repositorioVehiculo.save(mVehiculo);
 		return vehiculoActualizado;
-	}
+	}*/
 	
-	@PutMapping("vehiculos/salida/{placa}")
+	/*@PutMapping("vehiculos/salida/{placa}")
 	public ModeloVehiculo registrarSalidaVehiculoYCobrar(@PathVariable(value = "placa") String placa,
 			@RequestBody Vehiculo detallesVehiculo){
 		
@@ -168,9 +224,9 @@ public class Crud {
 		System.out.println("Tiempo nuevo en Date: " + date);
 		String otro = sdf.format(date.getTime());
 		System.out.println("Tiempo nuevo en mili: " + sdf.format(date.getTime()));
-		Timestamp timpestamp = new Timestamp(date.getTime());*/
+		Timestamp timpestamp = new Timestamp(date.getTime());
 		
-	}
+	}*/
 
 	public boolean validarCeldasDisponiblesMoto(Vehiculo vehiculo, Parqueadero parqueadero) {
 		int ocupadas = obtenerCantidadCeldasDisponibles(vehiculo.getTipo());

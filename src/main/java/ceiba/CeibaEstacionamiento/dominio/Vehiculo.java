@@ -23,7 +23,6 @@ public class Vehiculo{
 	
 	private Date fechaIngreso;
 	
-	@Autowired
 	public Vehiculo(){
 		
 	}
@@ -64,6 +63,14 @@ public class Vehiculo{
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public Date getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	public void setFechaIngreso(Date fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
 	}	
 		
 }

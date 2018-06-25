@@ -1,6 +1,7 @@
 package ceiba.CeibaEstacionamiento.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,12 @@ public class ControladorParqueo {
 	@PostMapping("/vehiculos")
 	public Vehiculo registrarVehiculo(@RequestBody Vehiculo vehiculo) {
 		return vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);		
+	}
+	
+	// Registrar la salida de un vehiculo y cobrar
+	@PostMapping("/vehiculos/salida/{placa}")
+	public int registrarSalidaYCobrar(@PathVariable(value = "placa") String placa) {
+		return vigilante.registrarSalidaVehiculo(placa, parqueadero);		
 	}
 	
 	// Obtener todos los vehiculos - GET
