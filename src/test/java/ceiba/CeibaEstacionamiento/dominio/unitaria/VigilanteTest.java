@@ -1,4 +1,4 @@
-package ceiba.CeibaEstacionamiento.dominio;
+package ceiba.CeibaEstacionamiento.dominio.unitaria;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +16,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ceiba.CeibaEstacionamiento.controlador.Crud;
+import ceiba.CeibaEstacionamiento.dominio.Carro;
+import ceiba.CeibaEstacionamiento.dominio.Fecha;
+import ceiba.CeibaEstacionamiento.dominio.Moto;
+import ceiba.CeibaEstacionamiento.dominio.Parqueadero;
+import ceiba.CeibaEstacionamiento.dominio.Validacion;
+import ceiba.CeibaEstacionamiento.dominio.Vehiculo;
+import ceiba.CeibaEstacionamiento.dominio.Vigilante;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
