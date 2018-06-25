@@ -14,6 +14,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
 
 group = 'ceiba'
 version = '0.0.1-SNAPSHOT'
@@ -32,4 +33,12 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.mockito:mockito-all:1.10.19')
+}
+
+test{
+	jacoco{
+		append=false
+		destinationFile =file("build/jacoco/jacocoTest.exec")
+	}
+	reports.junitXml.destination=file("build/jacoco/test-results")
 }
