@@ -19,10 +19,6 @@ public class Validacion {
 	
 	public boolean esPlacaValida(String placa) {
 		String primeraLetraPlaca = placa.substring(0, 1);
-		//Calendar calendar = Calendar.getInstance();
-		//DateTime date = new DateTime();
-		//int dia = calendar.get(Calendar.DAY_OF_WEEK);
-		//int dia = date.getDayOfWeek();
 		int dia = fecha.obtenerDia();
 		System.out.println(dia);
 		if (primeraLetraPlaca.equals("A")) {

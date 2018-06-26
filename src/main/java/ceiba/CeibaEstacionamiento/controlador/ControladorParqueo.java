@@ -29,7 +29,7 @@ public class ControladorParqueo {
 	
 	// Registrar la salida de un vehiculo y cobrar
 	@PostMapping("/vehiculos/salida/{placa}")
-	public int registrarSalidaYCobrar(@PathVariable(value = "placa") String placa) {
+	public double registrarSalidaYCobrar(@PathVariable(value = "placa") String placa) {
 		return vigilante.registrarSalidaVehiculo(placa, parqueadero);		
 	}
 	

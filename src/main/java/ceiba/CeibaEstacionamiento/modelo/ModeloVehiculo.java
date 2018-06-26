@@ -40,7 +40,7 @@ public class ModeloVehiculo implements Serializable{
 	@Autowired
 	public ModeloVehiculo() {
 		
-	}	
+	}
 	
 	public ModeloVehiculo(String placa, String tipo, int cilindraje, String estado) {
 		this.placa = placa;

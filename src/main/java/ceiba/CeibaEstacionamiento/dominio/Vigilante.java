@@ -1,13 +1,12 @@
 package ceiba.CeibaEstacionamiento.dominio;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Duration;
 import org.joda.time.Hours;
 import org.joda.time.Minutes;
-import org.joda.time.Seconds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,8 @@ public class Vigilante {
 	public static final String VALIDACION_PLACA_CARRO = "Verifique la placa del carro";
 	public static final String VALIDACION_CAMPOS_MOTO = "Verifique el cilindraje o placa de la moto";
 	public static final String VALIDACION_PLACA_MOTO = "Verifique la placa de la moto";
+	public static final int MINUTOS_EN_NUEVE_HORAS = 540;
+	public static final int MINUTOS_DIA = 1440;
 
 	@Autowired
 	Crud crud;
@@ -65,8 +66,8 @@ public class Vigilante {
 		System.out.println(v.getPlaca());
 		v.setPlaca(placaActualizada);
 		System.out.println(v.getPlaca());
-		boolean res = validacion.esPlacaValida(v.getPlaca());
-		if (res){
+		//boolean res = validacion.esPlacaValida(v.getPlaca());
+		if (validacion.esPlacaValida(v.getPlaca())){
 			if (v.getTipo().equals("C") && crud.validarCeldasDisponiblesCarro(v, p)) {
 				System.out.println("entro");
 				vehiculo = crud.registrarVehiculo(v, p);
@@ -78,85 +79,72 @@ public class Vigilante {
 		return vehiculo;
 	}
 	
-	public int registrarSalidaVehiculo(String placa, Parqueadero parqueadero){
+	public double registrarSalidaVehiculo(String placa, Parqueadero parqueadero){
 		Vehiculo vehiculoASalir = crud.registrarSalida(placa, parqueadero);
-		int totalAPagar = 0;
-		System.out.println("Vehiculo a salir = " + vehiculoASalir.getPlaca());
+		double totalAPagar = 0;
 		if(vehiculoASalir != null) {
-			System.out.println("Entro aca");
-			//comparar fechas para cobrar
 			Date fechaBD = vehiculoASalir.getFechaIngreso();
-			DateTime fechaInicial = new DateTime(fechaBD);
-			DateTime fechaFinal = new DateTime();			
-			int diferenciaDias = Days.daysBetween(fechaInicial, fechaFinal).getDays();
-			int diferenciaHoras = Hours.hoursBetween(fechaInicial, fechaFinal).getHours();
-			int diferenciaMinutos = Minutes.minutesBetween(fechaInicial, fechaFinal).getMinutes();
-			//Hours hours = Hours.hoursBetween(start, end);
-			//Minutes minu = Minutes.minutesBetween(start, end);
-			//Seconds secs = Seconds.secondsBetween(start, end);
-			//int nroDiasEntreFechas = diff.getDays();
-			System.out.println("Diferencia dias = " + diferenciaDias);
-			System.out.println("Fecha ingreso = " + fechaInicial);
+			DateTime fechaInicial = fecha.obtenerFechaEntrada(fechaBD);
+			DateTime fechaFinal = fecha.obtenerFechaActual();
+			Duration duracionParqueo = fecha.obtenerDuracionParqueo(fechaInicial, fechaFinal);
+			System.out.println("cantidad minutos: " + duracionParqueo.getStandardMinutes());
 			
 			if(vehiculoASalir.getTipo().equals("C")) {
-				if(diferenciaDias < 1) {	
-					if(diferenciaHoras == 8 && fecha.obtenerMinutos()>0) {						
-						totalAPagar = cobro.getValorDiaCarro();
-					} else if(diferenciaHoras==0) {
-						totalAPagar = (diferenciaHoras+1)*cobro.getValorHoraCarro();						
+				if(duracionParqueo.getStandardMinutes() < MINUTOS_EN_NUEVE_HORAS){
+					System.out.println("Horas < 9");
+					int cantidadHoras =(int)(Math.ceil((float)duracionParqueo.getStandardMinutes()/60));
+					totalAPagar = cobro.getValorHoraCarro()*cantidadHoras;
+				} else {
+					Long cantidadDias = duracionParqueo.getStandardDays();
+					System.out.println("cantidad de dias: " + cantidadDias);
+					if(cantidadDias > 0) {					
+						System.out.println("Dias > 0");
+						Long cantidadMinutosUltimoDia = duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA;
+						int cantidadHorasUlitmoDia = (int)(Math.ceil((float)(duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA)/60));
+						if(cantidadMinutosUltimoDia >= MINUTOS_EN_NUEVE_HORAS){
+							cantidadHorasUlitmoDia = 0;
+							cantidadDias = cantidadDias+1;							
+						}
+						totalAPagar = cobro.getValorDiaCarro()*cantidadDias + cobro.getValorHoraCarro()*cantidadHorasUlitmoDia;						
 					} else {
-						totalAPagar = diferenciaHoras*cobro.getValorHoraCarro();
+						System.out.println("Dias = 0, entonces cobro el dia");
+						totalAPagar = cobro.getValorDiaCarro();
 					}
-				} else {
-					totalAPagar = diferenciaDias*cobro.getValorDiaCarro();
-				}
-				
-			} else if(vehiculoASalir.getTipo().equals("M") && vehiculoASalir.getCilindraje()>500){
-				if(diferenciaDias < 1) {
-					if(diferenciaHoras == 8 && fecha.obtenerMinutos()>0) {						
-						totalAPagar = cobro.getValorDiaMoto()+2000;
-					} else if (diferenciaHoras==0) {
-						totalAPagar = (diferenciaHoras+1)*cobro.getValorHoraMoto()+2000;						
-					}
-				} else {
-					totalAPagar = diferenciaDias*cobro.getValorDiaMoto()+2000;
-				}
+				}		
 			} else {
-				if(diferenciaDias < 1) {					
-					if(diferenciaHoras == 8 && fecha.obtenerMinutos()>0) {						
-						totalAPagar = cobro.getValorDiaMoto();
-					} else if (diferenciaHoras==0){
-						totalAPagar = (diferenciaHoras+1)*cobro.getValorHoraMoto();						
-					}
+				//vehiculoASalir.getTipo().equals("M") && vehiculoASalir.getCilindraje()>500
+				if(duracionParqueo.getStandardMinutes() < MINUTOS_EN_NUEVE_HORAS){
+					int cantidadHoras = (int)(Math.ceil((float)duracionParqueo.getStandardMinutes()/60));
+					totalAPagar = cobro.getValorHoraMoto()*cantidadHoras;
 				} else {
-					totalAPagar = diferenciaDias*cobro.getValorDiaMoto();
+					Long cantidadDias= duracionParqueo.getStandardDays();
+					if(cantidadDias == 0) {
+						System.out.println("Dias = 0");
+						totalAPagar = cobro.getValorDiaMoto();
+					} else {
+						System.out.println("Dias > 0");
+						Long cantidadMinutosUltimoDia = duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA;
+						int cantidadHorasUlitmoDia = (int)(Math.ceil((float)(duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA)/60));
+						if(cantidadMinutosUltimoDia >= MINUTOS_EN_NUEVE_HORAS){
+							cantidadDias = cantidadDias+1;
+							cantidadHorasUlitmoDia = 0;
+						}
+						if(vehiculoASalir.getCilindraje() > 500){
+							totalAPagar = cobro.getValorDiaMoto()*cantidadDias + cobro.getValorHoraMoto()*cantidadHorasUlitmoDia + 
+									(double)cobro.getValorAdicionalMoto();
+						}else {
+							totalAPagar = cobro.getValorDiaMoto()*cantidadDias + cobro.getValorHoraMoto()*cantidadHorasUlitmoDia;
+						}						
+					}
 				}
-			}			
-			
+			}	
+			return totalAPagar;
+		} else {
+			return totalAPagar;
 		}
-		return totalAPagar;
 	}
 
 	public void cobrar() {
 
 	}
-
-	/*public boolean esPlacaValida(String placa) {
-		String primeraLetraPlaca = placa.substring(0, 1);
-		//Calendar calendar = Calendar.getInstance();
-		//DateTime date = new DateTime();
-		//int dia = calendar.get(Calendar.DAY_OF_WEEK);
-		//int dia = date.getDayOfWeek();
-		int dia = fecha.obtenerDia();
-		System.out.println(dia);
-		if (primeraLetraPlaca.equals("A")) {
-			if (dia == 7 || dia == 1) {
-				return true;
-			}
-			return false;
-		} else {
-			return true;
-		}
-	}*/
-
 }

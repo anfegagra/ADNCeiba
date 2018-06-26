@@ -44,61 +44,44 @@ public class Crud {
 			
 			ModeloVehiculo vehiculoActualizado = obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca());
 			if(vehiculoActualizado.getEstado().equals("Inactivo")){
-				//System.out.println(vehiculoActualizado.getEstado());
-				//System.out.println("------------------------");
 				vehiculoActualizado.setEstado("Activo");
 				DateTime dt = new DateTime();
 				vehiculoActualizado.setFechaIngreso(dt.toDate());
-				//System.out.println(vehiculoActualizado.getEstado());
 				resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
-				//resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
 				return convertirADominio(resultadoInsercion);
 			} else {
 				System.out.println("ya existe vehiculo");
 				return null;
 			}			
-			
 		} else {
-
-			// if(vehiculo.getTipo().equals("C")){
-			// validarCeldasDisponiblesCarro(vehiculo, parqueadero,
-			// modeloVehiculo);
-			//
-			// }else{
-			// validarCeldasDisponiblesMoto(vehiculo, parqueadero,
-			// modeloVehiculo);
-			// }
 			resultadoInsercion = repositorioVehiculo.save(modeloVehiculo);
 			return convertirADominio(resultadoInsercion);
 		}
 	}
 	
 	public Vehiculo registrarSalida(String placa, Parqueadero parqueadero) {
-		ModeloVehiculo modeloVehiculo = obtenerVehiculoPorPlaca(placa);
-		ModeloVehiculo resultadoSalida = null;
-		System.out.println("vehiculo = " + modeloVehiculo.getPlaca());
 		
-		if(modeloVehiculo != null) {
-			
+		ModeloVehiculo resultadoSalida = null;
+		
+		if(obtenerVehiculoPorPlaca(placa) != null) {
+			ModeloVehiculo modeloVehiculo = obtenerVehiculoPorPlaca(placa);
 			if(modeloVehiculo.getEstado().equals("Inactivo")){
 				System.out.println("El vehiculo no se encuentra en el parqueadero");
-				return null;
-				
+				return null;				
 			} else {
-				System.out.println("Se registro la salida del vehiculo");
+				System.out.println("Se registro la salida del vehiculo");				
 				modeloVehiculo.setEstado("Inactivo");
-				resultadoSalida = repositorioVehiculo.save(modeloVehiculo);
+				resultadoSalida = repositorioVehiculo.save(modeloVehiculo);				
 				
 				if(modeloVehiculo.getPlaca().equals("C")) {
 					parqueadero.setCeldasDisponiblesCarro(parqueadero.getCeldasDisponiblesCarro()+1);
 				} else {
 					parqueadero.setCeldasDisponiblesMoto(parqueadero.getCeldasDisponiblesMoto()+1);
-				}
-				
+				}				
 				System.out.println("vehiculo salida = " + resultadoSalida.getPlaca());
-				return convertirADominio(resultadoSalida);				
+				System.out.println("vehiculo salida fecha bd = " + resultadoSalida.getFechaIngreso());
+				return convertirADominio(resultadoSalida);			
 			}			
-			
 		} else {
 			return null;
 		}
@@ -139,46 +122,13 @@ public class Crud {
 	// Obtener un solo vehiculo por tipo - GET
 	@GetMapping("/vehiculos/tipo/{tipo}")
 	public List<ModeloVehiculo> obtenerVehiculoPorTipo(@PathVariable(value = "tipo") String tipo) {
-		// System.out.println("Tamano de la lista: " +
-		// obtenerVehiculoPorTipo(tipo).size());
-		// System.out.println(repositorioVehiculo.findByTipo(tipo).size());
 		List<ModeloVehiculo> lista = repositorioVehiculo.findByTipo(tipo);
-		System.out.println("-------------------------");
 		int cantidad = 0;
-		for (ModeloVehiculo listaFinal : lista) {
-
-			
-			
-			/*System.out.println(listaFinal.getPlaca());
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.mmm");
-			
-			Date mili = listaFinal.getFechaIngreso();
-			System.out.println("Tiempo bd en Date: " + mili);
-			System.out.println("Tiempo bd en mili: " + mili.getTime());
-			System.out.println("Tiempo bd en mili: " + sdf.format(mili.getTime()));
-
-			Date date = new Date();
-			System.out.println("Tiempo nuevo en Date: " + date);
-			String otro = sdf.format(date.getTime());
-			System.out.println("Tiempo nuevo en mili: " + sdf.format(date.getTime()));
-			Timestamp timpestamp = new Timestamp(date.getTime());
-			
-			DateTime datet = new DateTime();
-			System.out.println("-----" + datet);
-			Date jdkDate = datet.toDate();
-			System.out.println("-----" + jdkDate);
-			DateTime dtInicial = new DateTime(mili);
-			Days diff = Days.daysBetween(dtInicial, datet);
-			System.out.println("Diferencia de dias: " + diff.plus(2).getDays());*/
-			
-			
+		for (ModeloVehiculo listaFinal : lista) {			
 			if (listaFinal.getEstado().equals("Activo")) {
 				cantidad += 1;
 			}
-
 		}
-		System.out.println("Cantidad = " + cantidad);
-		System.out.println("-------------------------");
 		return repositorioVehiculo.findByTipo(tipo);
 	}
 
@@ -272,7 +222,7 @@ public class Crud {
 		Vehiculo vehiculo = null;
 		if (modeloVehiculo != null) {
 			vehiculo = new Vehiculo(modeloVehiculo.getPlaca(), modeloVehiculo.getTipo(),
-					modeloVehiculo.getCilindraje());
+					modeloVehiculo.getCilindraje(), modeloVehiculo.getEstado(), modeloVehiculo.getFechaIngreso());
 		}
 		return vehiculo;
 	}

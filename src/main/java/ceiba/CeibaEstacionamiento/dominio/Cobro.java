@@ -12,8 +12,8 @@ public class Cobro {
 	private int valorDiaCarro = 8000;
 	private int valorHoraMoto = 500;
 	private int valorDiaMoto = 4000;
+	private int valorAdicionalMoto = 2000;
 	
-	@Autowired
 	public Cobro(){
 		
 	}
@@ -30,5 +30,8 @@ public class Cobro {
 	public int getValorDiaMoto() {
 		return valorDiaMoto;
 	}
-	
+
+	public int getValorAdicionalMoto() {
+		return valorAdicionalMoto;
+	}	
 }

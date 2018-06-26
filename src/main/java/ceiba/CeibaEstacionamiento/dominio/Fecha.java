@@ -1,15 +1,32 @@
 package ceiba.CeibaEstacionamiento.dominio;
 
+import java.util.Date;
+
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Fecha {
-	
+public class Fecha {	
 	
 	public Fecha(){
 		
+	}
+	
+	public DateTime obtenerFechaEntrada(Date fechaBD){
+		DateTime fechaEntrada = new DateTime(fechaBD);
+		return fechaEntrada;
+	}
+	
+	public DateTime obtenerFechaActual(){
+		DateTime fechaActual = new DateTime();
+		return fechaActual;
+	}
+	
+	public Duration obtenerDuracionParqueo(DateTime fechaIngreso, DateTime fechaSalida){
+		Duration duracionParqueo = new Duration(fechaIngreso, fechaSalida);
+		return duracionParqueo;
 	}
 		
 	public int obtenerDia(){
@@ -18,7 +35,7 @@ public class Fecha {
 		return dia;
 	}
 	
-	public int obtenerHora(){
+	/*public int obtenerHora(){
 		DateTime date = new DateTime();
 		int hora = date.getHourOfDay();
 		return hora;
@@ -34,6 +51,6 @@ public class Fecha {
 		DateTime date = new DateTime();
 		int segundo = date.getSecondOfDay();
 		return segundo;
-	}
+	}*/
 	
 }
