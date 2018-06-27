@@ -26,7 +26,6 @@ public class ValidacionTest {
 		Validacion validacion = new Validacion(mockFecha);
 		String placa = "ASD123";
 		Mockito.doReturn(1).when(mockFecha).obtenerDia();
-		//Mockito.when(mockFecha.obtenerDia()).thenReturn(1);
 		
 		//Act
 		boolean resultado = validacion.esPlacaValida(placa);
@@ -41,7 +40,6 @@ public class ValidacionTest {
 		Validacion validacion = new Validacion(mockFecha);
 		String placa = "ASD123";
 		Mockito.doReturn(7).when(mockFecha).obtenerDia();
-		//Mockito.when(mockFecha.obtenerDia()).thenReturn(1);
 		
 		//Act
 		boolean resultado = validacion.esPlacaValida(placa);
@@ -56,7 +54,6 @@ public class ValidacionTest {
 		Validacion validacion = new Validacion(mockFecha);
 		String placa = "ASD123";
 		Mockito.doReturn(3).when(mockFecha).obtenerDia();
-		//Mockito.when(mockFecha.obtenerDia()).thenReturn(1);
 		
 		//Act
 		boolean resultado = validacion.esPlacaValida(placa);
@@ -69,8 +66,7 @@ public class ValidacionTest {
 	public void testEsPlacaValidaNoEmpiezaConA() {
 		//Arrange
 		Validacion validacion = new Validacion(mockFecha);
-		String placa = "BSD123";		
-		//Mockito.when(mockFecha.obtenerDia()).thenReturn(1);
+		String placa = "BSD123";
 		
 		//Act
 		boolean resultado = validacion.esPlacaValida(placa);

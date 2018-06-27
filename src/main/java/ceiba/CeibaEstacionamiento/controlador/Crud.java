@@ -199,7 +199,7 @@ public class Crud {
 				"ocupadas antes de ingresar: " + ocupadas + "   -----  " + parqueadero.getCeldasDisponiblesCarro());
 
 		int totalDisponibles;
-		if (parqueadero.getCeldasDisponiblesCarro() == 10) {
+		if (parqueadero.getCeldasDisponiblesCarro() == 20) {
 			totalDisponibles = (parqueadero.getCeldasDisponiblesCarro() - ocupadas);
 		} else {
 			totalDisponibles = parqueadero.getCeldasDisponiblesCarro();

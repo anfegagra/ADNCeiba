@@ -17,9 +17,10 @@ public class CeibaEstacionamientoApplication {
 	public static void main(String[] args) {
 		
 		SpringApplication.run(CeibaEstacionamientoApplication.class, args);
+		
 		//DateTime dt = new DateTime();
 		//System.out.println("dia= " + dt.getMinuteOfDay());
-		/*Date date = new Date(2018, 6, 25, 10, 00);
+		/*Date date = new Date(2018, 6, 27, 6, 00);
 		System.out.println(date);
 		Date date2 = new Date(2018, 6, 26, 9, 00);
 		System.out.println(date2);

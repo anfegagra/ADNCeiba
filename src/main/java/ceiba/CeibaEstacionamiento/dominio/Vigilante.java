@@ -15,8 +15,8 @@ public class Vigilante {
 	public static final String VALIDACION_PLACA_CARRO = "Verifique la placa del carro";
 	public static final String VALIDACION_CAMPOS_MOTO = "Verifique el cilindraje o placa de la moto";
 	public static final String VALIDACION_PLACA_MOTO = "Verifique la placa de la moto";
-	public static final int MINUTOS_EN_NUEVE_HORAS = 540;
-	public static final int MINUTOS_DIA = 1440;
+	//public static final int MINUTOS_EN_NUEVE_HORAS = 540;
+	//public static final int MINUTOS_DIA = 1440;
 
 	@Autowired
 	Crud crud;
@@ -42,6 +42,16 @@ public class Vigilante {
 		this.validacion = validacion;
 		this.crud = crud;
 	}
+	
+	public Vigilante(Crud crud){
+		this.crud = crud;
+	}
+	
+	public Vigilante(Crud crud, Fecha fecha, Cobro cobro){
+		this.crud = crud;
+		this.fecha = fecha;
+		this.cobro = cobro;
+	}
 
 	public Vehiculo registrarIngresoVehiculo(Vehiculo vehiculo, Parqueadero parqueadero) {
 		Vehiculo vehiculoAIngresar = null;
@@ -57,9 +67,7 @@ public class Vigilante {
 
 	public Vehiculo hacerValidaciones(Vehiculo v, Parqueadero p) {
 		Vehiculo vehiculo = null;
-		String letras = v.getPlaca().substring(0,3).toUpperCase();
-		String numeros = v.getPlaca().substring(3,6);
-		String placaActualizada = letras+numeros;
+		String placaActualizada = v.getPlaca().toUpperCase();
 		System.out.println(v.getPlaca());
 		v.setPlaca(placaActualizada);
 		System.out.println(v.getPlaca());
@@ -76,6 +84,21 @@ public class Vigilante {
 		return vehiculo;
 	}
 	
+	/*public String convertirPlacaAMayusculas(Vehiculo vehiculo){
+		String placa = "";
+		if(vehiculo.getTipo().equals("C")){
+			String letras = vehiculo.getPlaca().substring(0,3).toUpperCase();
+			String numeros = vehiculo.getPlaca().substring(3,6);
+			placa = letras+numeros;
+		}else{
+			String primerasTresLetras = vehiculo.getPlaca().substring(0,3).toUpperCase();
+			String numeros = vehiculo.getPlaca().substring(3,5);
+			String ultimaLetra = vehiculo.getPlaca().substring(5,6).toUpperCase();
+			placa = primerasTresLetras+numeros+ultimaLetra;
+		}
+		return placa;
+	}*/
+	
 	public double registrarSalidaVehiculo(String placa, Parqueadero parqueadero){
 		Vehiculo vehiculoASalir = crud.registrarSalida(placa, parqueadero);
 		double totalAPagar = 0;
@@ -85,12 +108,12 @@ public class Vigilante {
 			DateTime fechaFinal = fecha.obtenerFechaActual();
 			Duration duracionParqueo = fecha.obtenerDuracionParqueo(fechaInicial, fechaFinal);
 			System.out.println("Duracion parqueo = " + duracionParqueo);
-			System.out.println("cantidad minutos: " + duracionParqueo.getStandardMinutes());
+			//System.out.println("cantidad minutos: " + duracionParqueo.getStandardMinutes());
 			if(vehiculoASalir.getTipo().equals("C")) {
-				totalAPagar = registrarSalidaCarro(duracionParqueo);
+				totalAPagar = cobro.registrarSalidaCarro(duracionParqueo);
 			} else {
-				totalAPagar = registrarSalidaMoto(duracionParqueo);
-				totalAPagar += calcularCobroCilindraje(vehiculoASalir);
+				totalAPagar = cobro.registrarSalidaMoto(duracionParqueo);
+				totalAPagar += cobro.calcularCobroCilindraje(vehiculoASalir);
 			}
 			return totalAPagar;
 		} else {
@@ -98,7 +121,7 @@ public class Vigilante {
 		}
 	}
 
-	public double registrarSalidaCarro(Duration duracionParqueo) {
+	/*public double registrarSalidaCarro(Duration duracionParqueo) {
 		if(duracionParqueo.getStandardMinutes() < MINUTOS_EN_NUEVE_HORAS){
 			System.out.println("Horas < 9");
 			return calcularCobroMenorANueveHorasCarro(duracionParqueo);
@@ -113,15 +136,15 @@ public class Vigilante {
 				return cobro.getValorDiaCarro();
 			}
 		}
-	}
+	}*/
 	
-	public double calcularCobroMenorANueveHorasCarro(Duration duracionParqueo){
+	/*public double calcularCobroMenorANueveHorasCarro(Duration duracionParqueo){
 		int cantidadHoras = (int)(Math.ceil((float)duracionParqueo.getStandardMinutes()/60));
 		System.out.println(cantidadHoras);
 		return cobro.getValorHoraCarro()*cantidadHoras;
-	}
+	}*/
 	
-	public double calcularCobroDiasMayorACeroCarro(Duration duracionParqueo, long cantidadDias){
+	/*public double calcularCobroDiasMayorACeroCarro(Duration duracionParqueo, long cantidadDias){
 		long cantidadMinutosUltimoDia = duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA;
 		int cantidadHorasUlitmoDia = (int)(Math.ceil((float)(duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA)/60));
 		if(cantidadMinutosUltimoDia >= MINUTOS_EN_NUEVE_HORAS){
@@ -129,9 +152,9 @@ public class Vigilante {
 			cantidadDias = cantidadDias+1;							
 		}
 		return cobro.getValorDiaCarro()*cantidadDias + cobro.getValorHoraCarro()*cantidadHorasUlitmoDia;	
-	}
+	}*/
 	
-	public double registrarSalidaMoto(Duration duracionParqueo){		
+	/*public double registrarSalidaMoto(Duration duracionParqueo){	
 		if(duracionParqueo.getStandardMinutes() < MINUTOS_EN_NUEVE_HORAS){			
 			return calcularCobroMenorANueveHorasMoto(duracionParqueo);
 		} else {
@@ -144,14 +167,14 @@ public class Vigilante {
 				return cobro.getValorDiaMoto();		
 			}
 		}		
-	}
+	}*/
 	
-	public double calcularCobroMenorANueveHorasMoto(Duration duracionParqueo){
+	/*public double calcularCobroMenorANueveHorasMoto(Duration duracionParqueo){
 		int cantidadHoras = (int)(Math.ceil((float)duracionParqueo.getStandardMinutes()/60));
 		return cobro.getValorHoraMoto()*cantidadHoras;
-	}
+	}*/
 	
-	public double calcularCobroDiaMayorACeroMoto(Duration duracionParqueo, long cantidadDias){
+	/*public double calcularCobroDiaMayorACeroMoto(Duration duracionParqueo, long cantidadDias){
 		long cantidadMinutosUltimoDia = duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA;
 		int cantidadHorasUlitmoDia = (int)(Math.ceil((float)(duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA)/60));
 		if(cantidadMinutosUltimoDia >= MINUTOS_EN_NUEVE_HORAS){
@@ -159,14 +182,14 @@ public class Vigilante {
 			cantidadHorasUlitmoDia = 0;
 		}
 		return cobro.getValorDiaMoto()*cantidadDias + cobro.getValorHoraMoto()*cantidadHorasUlitmoDia;
-	}
+	}*/
 	
-	public double calcularCobroCilindraje(Vehiculo vehiculoASalir){
+	/*public double calcularCobroCilindraje(Vehiculo vehiculoASalir){
 		if(vehiculoASalir.getCilindraje() > 500){
 			return cobro.getValorAdicionalMoto();
 		}else {
 			return 0;
 		}
-	}	
+	}*/	
 	
 }

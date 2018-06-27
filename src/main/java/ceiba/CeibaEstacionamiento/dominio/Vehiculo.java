@@ -35,8 +35,14 @@ public class Vehiculo{
 		this.estado = estado;
 		this.fechaIngreso = fechaIngreso;
 	}
-
-
+	
+	public Vehiculo(String placa, String tipo, int cilindraje, Date fechaIngreso) {
+		super();
+		this.placa = placa;
+		this.tipo = tipo;
+		this.cilindraje = cilindraje;
+		this.fechaIngreso = fechaIngreso;
+	}
 
 	public Vehiculo(String placa, String tipo, int cilindraje) {
 		this.placa = placa;
