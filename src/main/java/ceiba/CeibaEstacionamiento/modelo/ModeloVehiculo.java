@@ -47,8 +47,14 @@ public class ModeloVehiculo implements Serializable{
 		this.tipo = tipo;
 		this.cilindraje = cilindraje;
 		this.estado = estado;
-	}
+	}	
 	
+	public ModeloVehiculo(String placa, String tipo, Date fechaIngreso) {
+		this.placa = placa;
+		this.tipo = tipo;
+		this.fechaIngreso = fechaIngreso;
+	}
+
 	public ModeloVehiculo(String placa, String tipo, int cilindraje, String estado, Date fechaIngreso) {
 		this.placa = placa;
 		this.tipo = tipo;
@@ -96,7 +102,5 @@ public class ModeloVehiculo implements Serializable{
 	public void setFechaIngreso(Date fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
-	
-	
 		
 }

@@ -1,6 +1,7 @@
 package ceiba.CeibaEstacionamiento.dominio;
 
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ceiba.CeibaEstacionamiento.controlador.Crud;
+import ceiba.CeibaEstacionamiento.modelo.ModeloVehiculo;
 
 @Service
 public class Vigilante {
@@ -119,6 +121,10 @@ public class Vigilante {
 		} else {
 			return totalAPagar;
 		}
+	}
+	
+	public List<Vehiculo> consultarVehiculos(){
+		return crud.consultarVehiculos();
 	}
 
 	/*public double registrarSalidaCarro(Duration duracionParqueo) {

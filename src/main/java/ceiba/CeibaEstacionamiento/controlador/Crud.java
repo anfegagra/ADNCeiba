@@ -3,6 +3,7 @@ package ceiba.CeibaEstacionamiento.controlador;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +87,23 @@ public class Crud {
 			return null;
 		}
 	}
+	
+	public List<Vehiculo> consultarVehiculos(){
+		List<ModeloVehiculo> lista = repositorioVehiculo.findAll();
+		List<Vehiculo> listaVehiculos = new ArrayList<>();
+		Vehiculo vehiculo = null;
+		if(lista.size() != 0) {
+			for(int i=0;i<lista.size();i++){
+				Date fechaIngreso = lista.get(i).getFechaIngreso();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+				String fecha = sdf.format(fechaIngreso).toString();
+				vehiculo = new Vehiculo(lista.get(i).getPlaca(), lista.get(i).getTipo(), 
+						lista.get(i).getCilindraje(), lista.get(i).getEstado(), lista.get(i).getFechaIngreso(), fecha);
+				listaVehiculos.add(vehiculo);				
+			}
+		}
+		return listaVehiculos;
+	}
 
 	public int obtenerCantidadCeldasDisponibles(String tipoVehiculo) {
 
@@ -114,10 +132,10 @@ public class Crud {
 	}
 
 	// Obtener todos los vehiculos - GET
-	@GetMapping("/vehiculos")
+	/*@GetMapping("/vehiculos")
 	public List<ModeloVehiculo> obtenerVehiculos() {
 		return repositorioVehiculo.findAll();
-	}
+	}*/
 
 	// Obtener un solo vehiculo por tipo - GET
 	@GetMapping("/vehiculos/tipo/{tipo}")
@@ -226,5 +244,4 @@ public class Crud {
 		}
 		return vehiculo;
 	}
-
 }

@@ -22,6 +22,7 @@ public class Vehiculo{
 	private String estado = "Activo";
 	
 	private Date fechaIngreso;
+	private String fechaAMostrar;
 	
 	public Vehiculo(){
 		
@@ -42,6 +43,16 @@ public class Vehiculo{
 		this.tipo = tipo;
 		this.cilindraje = cilindraje;
 		this.fechaIngreso = fechaIngreso;
+	}
+	
+	public Vehiculo(String placa, String tipo, int cilindraje, String estado, Date fechaIngreso, String fecha) {
+		super();
+		this.placa = placa;
+		this.tipo = tipo;
+		this.cilindraje = cilindraje;
+		this.estado = estado;
+		this.fechaIngreso = fechaIngreso;
+		this.fechaAMostrar = fecha;
 	}
 
 	public Vehiculo(String placa, String tipo, int cilindraje) {
@@ -88,6 +99,14 @@ public class Vehiculo{
 
 	public void setFechaIngreso(Date fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
-	}	
-		
+	}
+
+	public String getFechaAMostrar() {
+		return fechaAMostrar;
+	}
+
+	public void setFechaAMostrar(String fechaAMostrar) {
+		this.fechaAMostrar = fechaAMostrar;
+	}
+			
 }
