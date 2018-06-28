@@ -19,7 +19,7 @@ public class ControladorParqueo {
 	Parqueadero parqueadero;
 	
 	@Autowired
-	Vigilante vigilante;	
+	Vigilante vigilante;
 
     // Registrar ingreso de un vehiculo - POST
 	@PostMapping("/vehiculos")
