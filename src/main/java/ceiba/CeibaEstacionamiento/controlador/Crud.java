@@ -1,21 +1,16 @@
 package ceiba.CeibaEstacionamiento.controlador;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -90,21 +85,31 @@ public class Crud {
 		}
 	}
 	
-	public List<Vehiculo> consultarVehiculos(){
+	public List<Vehiculo> consultarVehiculosActivos(){
 		List<ModeloVehiculo> lista = repositorioVehiculo.findAll();
 		List<Vehiculo> listaVehiculos = new ArrayList<>();
 		Vehiculo vehiculo = null;
-		if(lista.size() != 0) {
+		if(!lista.isEmpty()) {
 			for(int i=0;i<lista.size();i++){
 				Date fechaIngreso = lista.get(i).getFechaIngreso();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-				String fecha = sdf.format(fechaIngreso).toString();
+				String fecha = sdf.format(fechaIngreso);
 				vehiculo = new Vehiculo(lista.get(i).getPlaca(), lista.get(i).getTipo(), 
 						lista.get(i).getCilindraje(), lista.get(i).getEstado(), lista.get(i).getFechaIngreso(), fecha);
-				listaVehiculos.add(vehiculo);				
+				if(validarEstado(vehiculo) != null){
+					listaVehiculos.add(vehiculo);
+				}								
 			}
 		}
 		return listaVehiculos;
+	}
+	
+	public Vehiculo validarEstado(Vehiculo vehiculo){
+		if(vehiculo.getEstado().equals("Activo")){
+			return vehiculo;
+		} else {
+			return null;
+		}
 	}
 
 	public int obtenerCantidadCeldasDisponibles(String tipoVehiculo) {
@@ -133,12 +138,6 @@ public class Crud {
 		return repositorioVehiculo.findByTipo(tipo);
 	}
 
-	// Obtener todos los vehiculos - GET
-	/*@GetMapping("/vehiculos")
-	public List<ModeloVehiculo> obtenerVehiculos() {
-		return repositorioVehiculo.findAll();
-	}*/
-
 	// Obtener un solo vehiculo por tipo - GET
 	@GetMapping("/vehiculos/tipo/{tipo}")
 	public List<ModeloVehiculo> obtenerVehiculoPorTipo(@PathVariable(value = "tipo") String tipo) {
@@ -152,51 +151,16 @@ public class Crud {
 		return repositorioVehiculo.findByTipo(tipo);
 	}
 
+	public ModeloVehiculo obtenerVehiculoPorPlaca(@PathVariable(value = "id") String placa) {
+		return repositorioVehiculo.findById(placa).orElse(null);		
+	}
+	
 	// Obtener un solo vehiculo por placa - GET
 	@GetMapping("/vehiculos/{id}")
-	public ModeloVehiculo obtenerVehiculoPorPlaca(@PathVariable(value = "id") String placa) {
-		return repositorioVehiculo.findById(placa).orElse(null);
+	public Vehiculo consultarPorPlaca(@PathVariable(value = "id") String placa) {
+		ModeloVehiculo resultadoBusqueda = repositorioVehiculo.findById(placa).orElse(null);
+		return convertirADominio(resultadoBusqueda);		
 	}
-
-	// Registrar salida de un vehiculo - PUT
-	/*@PutMapping("/vehiculos/{placa}")
-	public ModeloVehiculo registrarSalidaVehiculo(@PathVariable(value = "placa") String placa,
-			@RequestBody Vehiculo detallesVehiculo) {
-
-		ModeloVehiculo mVehiculo = repositorioVehiculo.findById(placa).orElse(null);
-
-		mVehiculo.setEstado("Inactivo");
-
-		ModeloVehiculo vehiculoActualizado = repositorioVehiculo.save(mVehiculo);
-		return vehiculoActualizado;
-	}*/
-	
-	/*@PutMapping("vehiculos/salida/{placa}")
-	public ModeloVehiculo registrarSalidaVehiculoYCobrar(@PathVariable(value = "placa") String placa,
-			@RequestBody Vehiculo detallesVehiculo){
-		
-		ModeloVehiculo mVehiculo = repositorioVehiculo.findById(placa).orElse(null);
-
-		mVehiculo.setEstado("Inactivo");
-
-		ModeloVehiculo vehiculoActualizado = repositorioVehiculo.save(mVehiculo);
-		return vehiculoActualizado;
-		
-		
-		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.mmm");
-		
-		Date mili = listaFinal.getFechaIngreso();
-		System.out.println("Tiempo bd en Date: " + mili);
-		System.out.println("Tiempo bd en mili: " + mili.getTime());
-		System.out.println("Tiempo bd en mili: " + sdf.format(mili.getTime()));
-
-		Date date = new Date();
-		System.out.println("Tiempo nuevo en Date: " + date);
-		String otro = sdf.format(date.getTime());
-		System.out.println("Tiempo nuevo en mili: " + sdf.format(date.getTime()));
-		Timestamp timpestamp = new Timestamp(date.getTime());
-		
-	}*/
 
 	public boolean validarCeldasDisponiblesMoto(Vehiculo vehiculo, Parqueadero parqueadero) {
 		int ocupadas = obtenerCantidadCeldasDisponibles(vehiculo.getTipo());
@@ -239,10 +203,13 @@ public class Crud {
 	}
 
 	public Vehiculo convertirADominio(ModeloVehiculo modeloVehiculo) {
+		Date fechaIngreso = modeloVehiculo.getFechaIngreso();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		String fecha = sdf.format(fechaIngreso).toString();
 		Vehiculo vehiculo = null;
 		if (modeloVehiculo != null) {
 			vehiculo = new Vehiculo(modeloVehiculo.getPlaca(), modeloVehiculo.getTipo(),
-					modeloVehiculo.getCilindraje(), modeloVehiculo.getEstado(), modeloVehiculo.getFechaIngreso());
+					modeloVehiculo.getCilindraje(), modeloVehiculo.getEstado(), modeloVehiculo.getFechaIngreso(), fecha);
 		}
 		return vehiculo;
 	}

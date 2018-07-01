@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ceiba.CeibaEstacionamiento.controlador.Crud;
-import ceiba.CeibaEstacionamiento.modelo.ModeloVehiculo;
 
 @Service
 public class Vigilante {
@@ -17,8 +16,6 @@ public class Vigilante {
 	public static final String VALIDACION_PLACA_CARRO = "Verifique la placa del carro";
 	public static final String VALIDACION_CAMPOS_MOTO = "Verifique el cilindraje o placa de la moto";
 	public static final String VALIDACION_PLACA_MOTO = "Verifique la placa de la moto";
-	//public static final int MINUTOS_EN_NUEVE_HORAS = 540;
-	//public static final int MINUTOS_DIA = 1440;
 
 	@Autowired
 	Crud crud;
@@ -86,21 +83,6 @@ public class Vigilante {
 		return vehiculo;
 	}
 	
-	/*public String convertirPlacaAMayusculas(Vehiculo vehiculo){
-		String placa = "";
-		if(vehiculo.getTipo().equals("C")){
-			String letras = vehiculo.getPlaca().substring(0,3).toUpperCase();
-			String numeros = vehiculo.getPlaca().substring(3,6);
-			placa = letras+numeros;
-		}else{
-			String primerasTresLetras = vehiculo.getPlaca().substring(0,3).toUpperCase();
-			String numeros = vehiculo.getPlaca().substring(3,5);
-			String ultimaLetra = vehiculo.getPlaca().substring(5,6).toUpperCase();
-			placa = primerasTresLetras+numeros+ultimaLetra;
-		}
-		return placa;
-	}*/
-	
 	public double registrarSalidaVehiculo(String placa, Parqueadero parqueadero){
 		Vehiculo vehiculoASalir = crud.registrarSalida(placa, parqueadero);
 		double totalAPagar = 0;
@@ -124,78 +106,6 @@ public class Vigilante {
 	}
 	
 	public List<Vehiculo> consultarVehiculos(){
-		return crud.consultarVehiculos();
-	}
-
-	/*public double registrarSalidaCarro(Duration duracionParqueo) {
-		if(duracionParqueo.getStandardMinutes() < MINUTOS_EN_NUEVE_HORAS){
-			System.out.println("Horas < 9");
-			return calcularCobroMenorANueveHorasCarro(duracionParqueo);
-		} else {
-			long cantidadDias = duracionParqueo.getStandardDays();
-			System.out.println("cantidad de dias: " + cantidadDias);
-			if(cantidadDias > 0) {			
-				System.out.println("Dias > 0");
-				return calcularCobroDiasMayorACeroCarro(duracionParqueo, cantidadDias);			
-			} else {
-				System.out.println("Dias = 0 y horas >= 9, entonces cobro el dia");
-				return cobro.getValorDiaCarro();
-			}
-		}
-	}*/
-	
-	/*public double calcularCobroMenorANueveHorasCarro(Duration duracionParqueo){
-		int cantidadHoras = (int)(Math.ceil((float)duracionParqueo.getStandardMinutes()/60));
-		System.out.println(cantidadHoras);
-		return cobro.getValorHoraCarro()*cantidadHoras;
-	}*/
-	
-	/*public double calcularCobroDiasMayorACeroCarro(Duration duracionParqueo, long cantidadDias){
-		long cantidadMinutosUltimoDia = duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA;
-		int cantidadHorasUlitmoDia = (int)(Math.ceil((float)(duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA)/60));
-		if(cantidadMinutosUltimoDia >= MINUTOS_EN_NUEVE_HORAS){
-			cantidadHorasUlitmoDia = 0;
-			cantidadDias = cantidadDias+1;							
-		}
-		return cobro.getValorDiaCarro()*cantidadDias + cobro.getValorHoraCarro()*cantidadHorasUlitmoDia;	
-	}*/
-	
-	/*public double registrarSalidaMoto(Duration duracionParqueo){	
-		if(duracionParqueo.getStandardMinutes() < MINUTOS_EN_NUEVE_HORAS){			
-			return calcularCobroMenorANueveHorasMoto(duracionParqueo);
-		} else {
-			long cantidadDias= duracionParqueo.getStandardDays();
-			if(cantidadDias > 0) {		
-				System.out.println("Dias > 0");
-				return calcularCobroDiaMayorACeroMoto(duracionParqueo, cantidadDias);
-			} else {
-				System.out.println("Dias = 0, entonces cobro el dia");
-				return cobro.getValorDiaMoto();		
-			}
-		}		
-	}*/
-	
-	/*public double calcularCobroMenorANueveHorasMoto(Duration duracionParqueo){
-		int cantidadHoras = (int)(Math.ceil((float)duracionParqueo.getStandardMinutes()/60));
-		return cobro.getValorHoraMoto()*cantidadHoras;
-	}*/
-	
-	/*public double calcularCobroDiaMayorACeroMoto(Duration duracionParqueo, long cantidadDias){
-		long cantidadMinutosUltimoDia = duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA;
-		int cantidadHorasUlitmoDia = (int)(Math.ceil((float)(duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA)/60));
-		if(cantidadMinutosUltimoDia >= MINUTOS_EN_NUEVE_HORAS){
-			cantidadDias = cantidadDias+1;
-			cantidadHorasUlitmoDia = 0;
-		}
-		return cobro.getValorDiaMoto()*cantidadDias + cobro.getValorHoraMoto()*cantidadHorasUlitmoDia;
-	}*/
-	
-	/*public double calcularCobroCilindraje(Vehiculo vehiculoASalir){
-		if(vehiculoASalir.getCilindraje() > 500){
-			return cobro.getValorAdicionalMoto();
-		}else {
-			return 0;
-		}
-	}*/	
-	
+		return crud.consultarVehiculosActivos();
+	}	
 }
