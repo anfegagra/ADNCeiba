@@ -47,10 +47,10 @@ pipeline {
 			}
 		}
 		
-		stage('------------>Integration Tests<------------') {
+		stage('Integration Tests') {
 			steps {
-				echo "INTEGRATION TESTS"
-				sh 'gradle --b ./build.gradle test --tests ceiba.CeibaEstacionamiento.dominio.integracion.*'
+				echo "------------>Integration Tests<------------"
+				sh 'gradle --b ./build.gradle test --tests ceiba.CeibaEstacionamiento.dominio.unitaria.*'
 			
 			}
 		}
