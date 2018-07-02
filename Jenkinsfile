@@ -50,7 +50,7 @@ pipeline {
 		stage('Integration Tests') {
 			steps {
 				echo "------------>Integration Tests<------------"
-				sh 'gradle --b ./build.gradle test --tests ceiba.CeibaEstacionamiento.dominio.unitaria.*'
+				sh 'gradle --b ./build.gradle test --tests ceiba.CeibaEstacionamiento.dominio.integracion.*'
 			
 			}
 		}
