@@ -34,8 +34,6 @@ import ceiba.CeibaEstacionamiento.testdatabuilder.MotoTestDataBuilder;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations="classpath:application-test.properties")
-/*@TestPropertySource(
-		  locations = "classpath:application-integrationtest.properties")*/
 public class VigilanteTest {
 	
 	@Autowired
