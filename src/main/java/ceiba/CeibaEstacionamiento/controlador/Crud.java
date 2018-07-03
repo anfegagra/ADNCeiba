@@ -138,7 +138,7 @@ public class Crud {
 		return repositorioVehiculo.findByTipo(tipo);
 	}
 
-	// Obtener un solo vehiculo por tipo - GET
+	// Obtener vehiculos por tipo - GET
 	@GetMapping("/vehiculos/tipo/{tipo}")
 	public List<ModeloVehiculo> obtenerVehiculoPorTipo(@PathVariable(value = "tipo") String tipo) {
 		List<ModeloVehiculo> lista = repositorioVehiculo.findByTipo(tipo);
@@ -159,6 +159,9 @@ public class Crud {
 	@GetMapping("/vehiculos/{id}")
 	public Vehiculo consultarPorPlaca(@PathVariable(value = "id") String placa) {
 		ModeloVehiculo resultadoBusqueda = repositorioVehiculo.findById(placa).orElse(null);
+		if(resultadoBusqueda.getEstado().equals("Inactivo")){
+			return null;
+		}
 		return convertirADominio(resultadoBusqueda);		
 	}
 

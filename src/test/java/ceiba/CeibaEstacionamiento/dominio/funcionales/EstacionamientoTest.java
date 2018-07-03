@@ -2,6 +2,8 @@ package ceiba.CeibaEstacionamiento.dominio.funcionales;
 
 import static org.junit.Assert.*;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,6 +11,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class EstacionamientoTest {
 	
@@ -26,21 +31,31 @@ public class EstacionamientoTest {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws InterruptedException {
+		//boolean result = false;
+		String resultado = "";
+		String registroExitoso = "Registro exitoso!";
+		String registroFallido = "El vehiculo ya se encuentra en el parqueadero";
+		
 		driver.get("http://localhost:4200/");
 		
 		WebElement placa = driver.findElement(By.id("inputPlaca"));
-		placa.sendKeys("SDF123");
+		placa.sendKeys("VVV333");
 		
 		WebElement cilindraje = driver.findElement(By.id("inputCilindraje"));
 		cilindraje.sendKeys("200");
 		
-		WebElement registrar = driver.findElement(By.name("botonRegistrar"));
+		
+		WebElement registrar = driver.findElement(By.id("botonRegistrar"));
 		registrar.click();
 		
-		//System.out.println(driver.findElement(By.id("tabla")).getText());
+		driver.manage().timeouts().implicitlyWait(1,TimeUnit.SECONDS);
+		WebElement mensajeResp = driver.findElement(By.id("contenedorRespuesta"));
+		System.out.println("RESPUESTA: "+mensajeResp.getText());
 		
-		//assertTrue(driver.findElement(By.id("tabla")).getText());
+		assertTrue(mensajeResp.getText().equals("Registro exitoso!"));
+		
+		
 	}
 
 }

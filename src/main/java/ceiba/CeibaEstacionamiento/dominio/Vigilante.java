@@ -97,7 +97,7 @@ public class Vigilante {
 				totalAPagar = cobro.registrarSalidaCarro(duracionParqueo);
 			} else {
 				totalAPagar = cobro.registrarSalidaMoto(duracionParqueo);
-				totalAPagar += cobro.calcularCobroCilindraje(vehiculoASalir);
+				totalAPagar = (totalAPagar!=0)?totalAPagar+cobro.calcularCobroCilindraje(vehiculoASalir):totalAPagar;
 			}
 			return totalAPagar;
 		} else {
