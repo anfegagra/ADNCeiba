@@ -48,7 +48,8 @@ public class EstacionamientoTest {
 	
 	@BeforeClass
 	public static void inicializarDriver(){
-		System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+		//System.setProperty("webdriver.chrome.driver", "driver/driver_windows/chromedriver.exe"); windows
+		System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
 		driver = new ChromeDriver();
 	}
 	
@@ -60,7 +61,7 @@ public class EstacionamientoTest {
 	@Test
 	public void registrarEntradaMoto() {	
 		
-		driver.get("http://localhost:4200/");
+		driver.get("http://localhost:8080/");
 				
 		WebElement inputPlaca = driver.findElement(By.id("inputPlaca"));
 		inputPlaca.sendKeys("JNH76I");
@@ -79,7 +80,7 @@ public class EstacionamientoTest {
 	@Test
 	public void registrarEntradaCarro() {	
 		
-		driver.get("http://localhost:4200/");
+		driver.get("http://localhost:8080/");
 				
 		WebElement inputPlaca = driver.findElement(By.id("inputPlaca"));
 		inputPlaca.sendKeys("UBV603");	
@@ -95,7 +96,7 @@ public class EstacionamientoTest {
 	@Test
 	public void registrarSalidaCarro() throws InterruptedException {	
 		
-		driver.get("http://localhost:4200/");
+		driver.get("http://localhost:8080/");
 		
 		String placa = "UBV603";
 				
@@ -117,7 +118,7 @@ public class EstacionamientoTest {
 	@Test
 	public void consultarCarro() throws InterruptedException{	
 		
-		driver.get("http://localhost:4200/");
+		driver.get("http://localhost:8080/");
 		
 		String placa = "UBV603";
 				

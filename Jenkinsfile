@@ -55,6 +55,14 @@ pipeline {
 			}
 		}
 		
+		stage('Functional Tests') {
+			steps {
+				echo "------------>Functional Tests<------------"
+				sh 'gradle --b ./build.gradle test --tests ceiba.CeibaEstacionamiento.dominio.funcionales.*'
+			
+			}
+		}
+		
 		stage('Static Code Analysis') {
 			steps {
 				echo "STATIC CODE ANALYSIS"

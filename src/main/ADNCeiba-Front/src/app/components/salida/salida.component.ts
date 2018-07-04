@@ -13,8 +13,8 @@ export class SalidaComponent implements OnInit {
   placa = ''
   mostrarMensaje: boolean = false;
   mostrarMensajeValor: boolean = false;
-  mensajeRespuesta: String = "";
-  valorParqueo: String = "";
+  mensajeRespuesta: string = "";
+  valorParqueo: string = "";
 
   constructor(private vehiculoService: VehiculoService) { }
 

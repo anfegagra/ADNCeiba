@@ -12,7 +12,7 @@ export class EntradaComponent implements OnInit {
   placa = '';
   cilindraje;
   mostrarMensaje: boolean = false;
-  mensajeRespuesta: String = "";
+  mensajeRespuesta: string = "";
   error: boolean= false;
   @Output() vehiculoGuardado = new EventEmitter<boolean>(); 
 
