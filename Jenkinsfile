@@ -37,15 +37,7 @@ pipeline {
 				echo "------------>Unit Tests<------------"
 				sh 'gradle --b ./build.gradle test --tests ceiba.CeibaEstacionamiento.dominio.unitaria.*'
 			}
-		}
-		
-		stage('Coverage') {
-			steps {
-				echo "------------>Coverage<------------"
-				sh 'gradle --b ./build.gradle jacocoTestReport'
-			
-			}
-		}
+		}		
 		
 		stage('Integration Tests') {
 			steps {
@@ -60,6 +52,14 @@ pipeline {
 				echo "------------>Functional Tests<------------"
 				sh 'chmod +x driver/chromedriver'
 				sh 'gradle --b ./build.gradle test --tests ceiba.CeibaEstacionamiento.dominio.funcionales.*'
+			
+			}
+		}
+		
+		stage('Coverage') {
+			steps {
+				echo "------------>Coverage<------------"
+				sh 'gradle --b ./build.gradle jacocoTestReport'
 			
 			}
 		}
