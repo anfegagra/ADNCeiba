@@ -60,7 +60,7 @@ integrationTest{
 		append=false
 		destinationFile =file("build/jacoco/jacocoTest.exec")
 	}
-	reports.junitXml.destination=file("build/jacoco/test-results")
+	reports.junitXml.destination=file("build/jacoco/integrationtest-results")
 }
 
 functionalTest{
@@ -68,7 +68,7 @@ functionalTest{
 		append=false
 		destinationFile =file("build/jacoco/jacocoTest.exec")
 	}
-	reports.junitXml.destination=file("build/jacoco/test-results")
+	reports.junitXml.destination=file("build/jacoco/functionaltest-results")
 }
 
 def webappDir = "$projectDir/src/main/ADNCeiba-Front"

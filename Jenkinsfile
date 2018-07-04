@@ -59,8 +59,7 @@ pipeline {
 		stage('Coverage') {
 			steps {
 				echo "------------>Coverage<------------"
-				sh 'gradle --b ./build.gradle jacocoTestReport'
-			
+				sh 'gradle --b ./build.gradle jacocoTestReport'			
 			}
 		}
 		
