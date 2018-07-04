@@ -48,7 +48,6 @@ public class Crud {
 				resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
 				return convertirADominio(resultadoInsercion);
 			} else {
-				//System.out.println("ya existe vehiculo");
 				return null;
 			}			
 		} else {
@@ -73,9 +72,7 @@ public class Crud {
 					parqueadero.setCeldasDisponiblesCarro(parqueadero.getCeldasDisponiblesCarro()+1);
 				} else {
 					parqueadero.setCeldasDisponiblesMoto(parqueadero.getCeldasDisponiblesMoto()+1);
-				}				
-				System.out.println("vehiculo salida = " + resultadoSalida.getPlaca());
-				System.out.println("vehiculo salida fecha bd = " + resultadoSalida.getFechaIngreso());
+				}
 				return convertirADominio(resultadoSalida);			
 			}			
 		} else {
@@ -123,10 +120,7 @@ public class Crud {
 	}
 
 	public boolean validarCeldasDisponiblesMoto(Vehiculo vehiculo, Parqueadero parqueadero) {
-		int ocupadas = obtenerCantidadCeldasDisponibles(vehiculo.getTipo());
-		System.out.println(
-				"ocupadas antes de ingresar: " + ocupadas + "   -----  " + parqueadero.getCeldasDisponiblesMoto());
-
+		int ocupadas = obtenerCantidadCeldasDisponibles(vehiculo.getTipo());		
 		int totalDisponibles;
 		if (parqueadero.getCeldasDisponiblesMoto() == 10) {
 			totalDisponibles = (parqueadero.getCeldasDisponiblesMoto() - ocupadas);
@@ -138,10 +132,7 @@ public class Crud {
 	}
 
 	public boolean validarCeldasDisponiblesCarro(Vehiculo vehiculo, Parqueadero parqueadero) {
-		int ocupadas = obtenerCantidadCeldasDisponibles(vehiculo.getTipo());
-		System.out.println(
-				"ocupadas antes de ingresar: " + ocupadas + "   -----  " + parqueadero.getCeldasDisponiblesCarro());
-
+		int ocupadas = obtenerCantidadCeldasDisponibles(vehiculo.getTipo());		
 		int totalDisponibles;
 		if (parqueadero.getCeldasDisponiblesCarro() == 20) {
 			totalDisponibles = (parqueadero.getCeldasDisponiblesCarro() - ocupadas);
@@ -166,7 +157,7 @@ public class Crud {
 
 	public void actualizarCeldasDisponibles(int totalDisponibles, String tipoVehiculo, Parqueadero parqueadero) {
 		if (totalDisponibles > 0) {
-			if (tipoVehiculo.equals("C")) {
+			if ("C".equals(tipoVehiculo)) {
 				parqueadero.setCeldasDisponiblesCarro(totalDisponibles - 1);
 			} else {
 				parqueadero.setCeldasDisponiblesMoto(totalDisponibles - 1);
@@ -177,25 +168,8 @@ public class Crud {
 	public Vehiculo convertirADominio(ModeloVehiculo modeloVehiculo) {
 		Date fechaIngreso = modeloVehiculo.getFechaIngreso();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-		String fecha = sdf.format(fechaIngreso).toString();
-		Vehiculo vehiculo = null;
-		if (modeloVehiculo != null) {
-			vehiculo = new Vehiculo(modeloVehiculo.getPlaca(), modeloVehiculo.getTipo(),
-					modeloVehiculo.getCilindraje(), modeloVehiculo.getEstado(), modeloVehiculo.getFechaIngreso(), fecha);
-		}
-		return vehiculo;
+		String fecha = sdf.format(fechaIngreso);		
+		return new Vehiculo(modeloVehiculo.getPlaca(), modeloVehiculo.getTipo(),
+				modeloVehiculo.getCilindraje(), modeloVehiculo.getEstado(), modeloVehiculo.getFechaIngreso(), fecha);
 	}
-	
-	// Obtener vehiculos por tipo - GET
-	/*@GetMapping("/vehiculos/tipo/{tipo}")
-	public List<ModeloVehiculo> obtenerVehiculoPorTipo(@PathVariable(value = "tipo") String tipo) {
-		List<ModeloVehiculo> lista = repositorioVehiculo.findByTipo(tipo);
-		int cantidad = 0;
-		for (ModeloVehiculo listaFinal : lista) {			
-			if (listaFinal.getEstado().equals(ACTIVO)) {
-				cantidad += 1;
-			}
-		}
-		return repositorioVehiculo.findByTipo(tipo);
-	}*/
 }
