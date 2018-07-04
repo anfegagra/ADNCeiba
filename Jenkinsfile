@@ -56,6 +56,14 @@ pipeline {
 			}
 		}
 		
+		stage('Coverage') {
+			steps {
+				echo "------------>Coverage<------------"
+				sh 'gradle --b ./build.gradle jacocoTestReport'
+			
+			}
+		}
+		
 		stage('Static Code Analysis') {
 			steps {
 				echo "STATIC CODE ANALYSIS"
