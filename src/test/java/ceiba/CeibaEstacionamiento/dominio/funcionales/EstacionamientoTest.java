@@ -26,7 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import ceiba.CeibaEstacionamiento.dominio.repositorio.RepositorioVehiculo;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment=WebEnvironment.DEFINED_PORT)
 public class EstacionamientoTest {
 	
 	private static final String REGISTRO_EXITOSO = "Registro exitoso!";
