@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ceiba.estacionamiento.dominio.Parqueadero;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
+import ceiba.estacionamiento.modelo.ModeloVehiculo;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders="*", maxAge = 3600)
 @RestController
@@ -42,5 +43,11 @@ public class ControladorParqueo {
 	@GetMapping("/vehiculos")
 	public List<Vehiculo> consultarVehiculos() {
 	    return vigilante.consultarVehiculos();
+	}
+	
+	// Obtener un solo vehiculo por placa - GET
+	@GetMapping("/vehiculos/{id}")
+	public Vehiculo consultarPorPlaca(@PathVariable(value = "id") String placa) {
+		return vigilante.consultarVehiculoPorPlaca(placa);		
 	}
 }

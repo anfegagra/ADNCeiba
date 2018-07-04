@@ -28,8 +28,8 @@ import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
 import ceiba.estacionamiento.dominio.repositorio.RepositorioVehiculo;
 import ceiba.estacionamiento.modelo.ModeloVehiculo;
-import ceiba.estacionamiento.testdatabuilder.CarroTestDataBuilder;
-import ceiba.estacionamiento.testdatabuilder.MotoTestDataBuilder;
+import ceiba.estacionamiento.testdatabuilderN.CarroTestDataBuilder;
+import ceiba.estacionamiento.testdatabuilderN.MotoTestDataBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

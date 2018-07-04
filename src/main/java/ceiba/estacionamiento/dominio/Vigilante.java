@@ -74,10 +74,10 @@ public class Vigilante {
 		if (validacion.esPlacaValida(v.getPlaca())){
 			if (v.getTipo().equals("C") && crud.validarCeldasDisponiblesCarro(v, p)) {
 				System.out.println("entro");
-				vehiculo = crud.registrarVehiculo(v, p);
+				vehiculo = crud.registrarVehiculo(v);
 
 			} else if (crud.validarCeldasDisponiblesMoto(v, p)) {
-				vehiculo = crud.registrarVehiculo(v, p);
+				vehiculo = crud.registrarVehiculo(v);
 			}
 		}
 		return vehiculo;
@@ -107,5 +107,9 @@ public class Vigilante {
 	
 	public List<Vehiculo> consultarVehiculos(){
 		return crud.consultarVehiculosActivos();
-	}	
+	}
+	
+	public Vehiculo consultarVehiculoPorPlaca(String placa){
+		return crud.consultarPorPlaca(placa);
+	}
 }

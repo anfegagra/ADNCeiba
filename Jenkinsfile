@@ -35,14 +35,14 @@ pipeline {
 		stage('Unit Tests') {
 			steps{
 				echo "------------>Unit Tests<------------"
-				sh 'gradle --b ./build.gradle test --tests ceiba.estacionamiento.dominio.unitaria.*'
+				sh 'gradle --b ./build.gradle test'
 			}
 		}		
 		
 		stage('Integration Tests') {
 			steps {
 				echo "------------>Integration Tests<------------"
-				sh 'gradle --b ./build.gradle test --tests ceiba.estacionamiento.dominio.integracion.*'
+				sh 'gradle --b ./build.gradle integrationTest'
 			
 			}
 		}
@@ -51,7 +51,7 @@ pipeline {
 			steps {
 				echo "------------>Functional Tests<------------"
 				sh 'chmod +x driver/chromedriver'
-				sh 'gradle --b ./build.gradle test --tests ceiba.estacionamiento.dominio.funcionales.*'
+				sh 'gradle --b ./build.gradle functionalTest'
 			
 			}
 		}

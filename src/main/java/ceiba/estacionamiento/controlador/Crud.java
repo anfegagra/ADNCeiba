@@ -28,21 +28,22 @@ public class Crud {
 	public static final String REGISTRO_EXITOSO = "Se registro el ingreso del vehiculo exitosamente";
 	public static final String REGISTRO_FALLIDO = "Registro fallido. No hay celdas disponibles";
 	public static final String VEHICULO_YA_INGRESADO = "Registro fallido. El vehiculo ya esta en el parqueadero";
+	public static final String INACTIVO = "Inactivo";
+	public static final String ACTIVO = "Activo";
 
 	@Autowired
 	RepositorioVehiculo repositorioVehiculo;
 
-	public Vehiculo registrarVehiculo(Vehiculo vehiculo, Parqueadero parqueadero) {
+	public Vehiculo registrarVehiculo(Vehiculo vehiculo) {
 		ModeloVehiculo modeloVehiculo = new ModeloVehiculo(vehiculo.getPlaca(), vehiculo.getTipo(),
 				vehiculo.getCilindraje(), vehiculo.getEstado());
 		ModeloVehiculo resultadoInsercion = null;
-		System.out.println(vehiculo.getPlaca());
 
 		if(obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca()) != null) {
 			
 			ModeloVehiculo vehiculoActualizado = obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca());
-			if(vehiculoActualizado.getEstado().equals("Inactivo")){
-				vehiculoActualizado.setEstado("Activo");
+			if(vehiculoActualizado.getEstado().equals(INACTIVO)){
+				vehiculoActualizado.setEstado(ACTIVO);
 				DateTime dt = new DateTime();
 				vehiculoActualizado.setFechaIngreso(dt.toDate());
 				resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
@@ -63,12 +64,12 @@ public class Crud {
 		
 		if(obtenerVehiculoPorPlaca(placa) != null) {
 			ModeloVehiculo modeloVehiculo = obtenerVehiculoPorPlaca(placa);
-			if(modeloVehiculo.getEstado().equals("Inactivo")){
+			if(modeloVehiculo.getEstado().equals(INACTIVO)){
 				System.out.println("El vehiculo no se encuentra en el parqueadero");
 				return null;				
 			} else {
 				System.out.println("Se registro la salida del vehiculo");				
-				modeloVehiculo.setEstado("Inactivo");
+				modeloVehiculo.setEstado(INACTIVO);
 				resultadoSalida = repositorioVehiculo.save(modeloVehiculo);				
 				
 				if(modeloVehiculo.getPlaca().equals("C")) {
@@ -83,6 +84,10 @@ public class Crud {
 		} else {
 			return null;
 		}
+	}
+	
+	public ModeloVehiculo obtenerVehiculoPorPlaca(@PathVariable(value = "id") String placa) {
+		return repositorioVehiculo.findById(placa).orElse(null);		
 	}
 	
 	public List<Vehiculo> consultarVehiculosActivos(){
@@ -105,61 +110,16 @@ public class Crud {
 	}
 	
 	public Vehiculo validarEstado(Vehiculo vehiculo){
-		if(vehiculo.getEstado().equals("Activo")){
+		if(vehiculo.getEstado().equals(ACTIVO)){
 			return vehiculo;
 		} else {
 			return null;
 		}
-	}
-
-	public int obtenerCantidadCeldasDisponibles(String tipoVehiculo) {
-
-		List<ModeloVehiculo> lista = obtenerListaActivos(tipoVehiculo);
-
-		// System.out.println("Tamano de la lista: " +
-		// obtenerVehiculoPorTipo(tipoVehiculo).size());
-		int cantidad = 0;
-
-		for (ModeloVehiculo listaFinal : lista) {
-			// System.out.println(listaFinal);
-
-			if (listaFinal.getEstado().equals("Activo")) {
-				cantidad += 1;
-			}
-		}
-
-		// System.out.println("Cantidad en crud: " + cantidad);
-		return cantidad;
-
-	}
-
-	public List<ModeloVehiculo> obtenerListaActivos(String tipo) {
-
-		return repositorioVehiculo.findByTipo(tipo);
-	}
-
-	// Obtener vehiculos por tipo - GET
-	@GetMapping("/vehiculos/tipo/{tipo}")
-	public List<ModeloVehiculo> obtenerVehiculoPorTipo(@PathVariable(value = "tipo") String tipo) {
-		List<ModeloVehiculo> lista = repositorioVehiculo.findByTipo(tipo);
-		int cantidad = 0;
-		for (ModeloVehiculo listaFinal : lista) {			
-			if (listaFinal.getEstado().equals("Activo")) {
-				cantidad += 1;
-			}
-		}
-		return repositorioVehiculo.findByTipo(tipo);
-	}
-
-	public ModeloVehiculo obtenerVehiculoPorPlaca(@PathVariable(value = "id") String placa) {
-		return repositorioVehiculo.findById(placa).orElse(null);		
-	}
+	}	
 	
-	// Obtener un solo vehiculo por placa - GET
-	@GetMapping("/vehiculos/{id}")
 	public Vehiculo consultarPorPlaca(@PathVariable(value = "id") String placa) {
 		ModeloVehiculo resultadoBusqueda = repositorioVehiculo.findById(placa).orElse(null);
-		if(resultadoBusqueda.getEstado().equals("Inactivo")){
+		if(resultadoBusqueda.getEstado().equals(INACTIVO)){
 			return null;
 		}
 		return convertirADominio(resultadoBusqueda);		
@@ -194,6 +154,18 @@ public class Crud {
 		actualizarCeldasDisponibles(totalDisponibles, vehiculo.getTipo(), parqueadero);
 		return totalDisponibles > 0;
 	}
+	
+	public int obtenerCantidadCeldasDisponibles(String tipoVehiculo) {
+
+		List<ModeloVehiculo> lista = repositorioVehiculo.findByTipo(tipoVehiculo);
+		int cantidad = 0;
+		for (ModeloVehiculo listaFinal : lista) {
+			if (listaFinal.getEstado().equals(ACTIVO)) {
+				cantidad += 1;
+			}
+		}
+		return cantidad;
+	}
 
 	public void actualizarCeldasDisponibles(int totalDisponibles, String tipoVehiculo, Parqueadero parqueadero) {
 		if (totalDisponibles > 0) {
@@ -216,4 +188,17 @@ public class Crud {
 		}
 		return vehiculo;
 	}
+	
+	// Obtener vehiculos por tipo - GET
+	/*@GetMapping("/vehiculos/tipo/{tipo}")
+	public List<ModeloVehiculo> obtenerVehiculoPorTipo(@PathVariable(value = "tipo") String tipo) {
+		List<ModeloVehiculo> lista = repositorioVehiculo.findByTipo(tipo);
+		int cantidad = 0;
+		for (ModeloVehiculo listaFinal : lista) {			
+			if (listaFinal.getEstado().equals(ACTIVO)) {
+				cantidad += 1;
+			}
+		}
+		return repositorioVehiculo.findByTipo(tipo);
+	}*/
 }
