@@ -83,10 +83,8 @@ public class Vigilante {
 			Date fechaBD = vehiculoASalir.getFechaIngreso();
 			DateTime fechaInicial = fecha.obtenerFechaEntrada(fechaBD);
 			DateTime fechaFinal = fecha.obtenerFechaActual();
-			Duration duracionParqueo = fecha.obtenerDuracionParqueo(fechaInicial, fechaFinal);
-			System.out.println("Duracion parqueo = " + duracionParqueo);
-			//System.out.println("cantidad minutos: " + duracionParqueo.getStandardMinutes());
-			if(vehiculoASalir.getTipo().equals("C")) {
+			Duration duracionParqueo = fecha.obtenerDuracionParqueo(fechaInicial, fechaFinal);			 
+			if ("C".equals(vehiculoASalir.getTipo())) {
 				totalAPagar = cobro.registrarSalidaCarro(duracionParqueo);
 			} else {
 				totalAPagar = cobro.registrarSalidaMoto(duracionParqueo);
