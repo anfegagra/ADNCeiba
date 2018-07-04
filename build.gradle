@@ -55,6 +55,22 @@ test{
 	reports.junitXml.destination=file("build/jacoco/test-results")
 }
 
+integrationTest{
+	jacoco{
+		append=false
+		destinationFile =file("build/jacoco/jacocoTest.exec")
+	}
+	reports.junitXml.destination=file("build/jacoco/test-results")
+}
+
+functionalTest{
+	jacoco{
+		append=false
+		destinationFile =file("build/jacoco/jacocoTest.exec")
+	}
+	reports.junitXml.destination=file("build/jacoco/test-results")
+}
+
 def webappDir = "$projectDir/src/main/ADNCeiba-Front"
 sourceSets {
 	main {
