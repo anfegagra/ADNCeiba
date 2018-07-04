@@ -15,9 +15,8 @@ public class Cobro {
 	private int valorDiaMoto = 4000;
 	private int valorAdicionalMoto = 2000;
 	
-	// Constructor que requiere springboot
 	public Cobro(){
-		
+		// Constructor que requiere springboot
 	}
 	
 	public double registrarSalidaCarro(Duration duracionParqueo) {
