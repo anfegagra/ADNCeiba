@@ -1,9 +1,6 @@
 package ceiba.estacionamiento.dominio;
 
-import java.util.Date;
-
 import org.joda.time.Duration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +15,7 @@ public class Cobro {
 	private int valorDiaMoto = 4000;
 	private int valorAdicionalMoto = 2000;
 	
+	// Constructor que requiere springboot
 	public Cobro(){
 		
 	}
