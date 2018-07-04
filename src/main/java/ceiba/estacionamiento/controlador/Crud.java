@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +48,7 @@ public class Crud {
 				resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
 				return convertirADominio(resultadoInsercion);
 			} else {
-				System.out.println("ya existe vehiculo");
+				//System.out.println("ya existe vehiculo");
 				return null;
 			}			
 		} else {
@@ -65,14 +64,12 @@ public class Crud {
 		if(obtenerVehiculoPorPlaca(placa) != null) {
 			ModeloVehiculo modeloVehiculo = obtenerVehiculoPorPlaca(placa);
 			if(modeloVehiculo.getEstado().equals(INACTIVO)){
-				System.out.println("El vehiculo no se encuentra en el parqueadero");
 				return null;				
-			} else {
-				System.out.println("Se registro la salida del vehiculo");				
+			} else {			
 				modeloVehiculo.setEstado(INACTIVO);
 				resultadoSalida = repositorioVehiculo.save(modeloVehiculo);				
 				
-				if(modeloVehiculo.getPlaca().equals("C")) {
+				if("C".equals(modeloVehiculo.getPlaca())) {
 					parqueadero.setCeldasDisponiblesCarro(parqueadero.getCeldasDisponiblesCarro()+1);
 				} else {
 					parqueadero.setCeldasDisponiblesMoto(parqueadero.getCeldasDisponiblesMoto()+1);

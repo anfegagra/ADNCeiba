@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ceiba.estacionamiento.dominio.Parqueadero;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
-import ceiba.estacionamiento.modelo.ModeloVehiculo;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders="*", maxAge = 3600)
 @RestController
