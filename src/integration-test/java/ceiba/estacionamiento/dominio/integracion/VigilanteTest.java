@@ -50,19 +50,6 @@ public class VigilanteTest {
 	
 	@Autowired
 	RepositorioVehiculo repositorioVehiculo;
-
-	@Before
-	public void setUp(){
-		//repositorioVehiculo.deleteAll();
-		//Para el metodo testRegistrarSalidaVehiculoCarro
-		/*ModeloVehiculo modeloVehiculo = new ModeloVehiculo("JUN258", "C", 200, "Activo", new Date((2018-1900), 5, 26, 13, 00));
-		repositorioVehiculo.save(modeloVehiculo);*/
-	}
-	
-	/*@After
-	public void tearDown(){
-		repositorioVehiculo.deleteAll();
-	}*/
 		
 	@Test
 	public void testRegistrarIngresoVehiculoTipoCarro() {
