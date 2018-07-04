@@ -1,0 +1,23 @@
+<h3>Consultar vehiculo</h3>
+<br>
+<div *ngIf="vehiculo;else campos_vacios">
+    <label for="ex1" id="labelPlaca">Placa: <strong>{{vehiculo.placa}}</strong></label>
+    <br><br>
+    <label for="ex1">Cilindraje: <strong>{{vehiculo.cilindraje}}</strong></label>
+    <br><br>
+    <label for="ex1">Fecha entrada: <strong>{{vehiculo.fechaAMostrar}}</strong></label>
+    <br><br>
+</div>
+
+<input class="form-control" id="inputConsulta" type="text" [(ngModel)]="placa">
+<br>
+<button type="button" id="botonConsultar" class="btn btn-dark" style="float: left;" (click)="consultarVehiculo(placa)">Consultar</button>
+
+<ng-template #campos_vacios>
+    <label for="ex1">Placa: </label>
+    <br><br>
+    <label for="ex1">Cilindraje: </label>
+    <br><br>
+    <label for="ex1">Fecha entrada: </label>
+    <br><br>
+</ng-template>

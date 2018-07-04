@@ -1,0 +1,14 @@
+<h3>Registrar entrada</h3>
+<br>
+
+<label for="ex1" style="text-align: left">Placa</label>
+<input class="form-control" id="inputPlaca" type="text" [(ngModel)]="placa">
+<br>
+<label for="ex1">Cilindraje (En caso de moto)</label>
+<input class="form-control" id="inputCilindraje" type="text" [(ngModel)]="cilindraje">
+<br>
+<button type="button" id="botonRegistrar" class="btn btn-dark" style="float: left;" (click)="registrarEntrada(placa, cilindraje)">Registrar</button>
+<br><br><br>
+<div *ngIf="mostrarMensaje" [ngClass]="[error ? 'alert alert-danger' : 'alert alert-success']" id="contenedorRespuesta">
+  {{mensajeRespuesta}}
+</div>

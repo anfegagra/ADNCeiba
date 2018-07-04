@@ -1,0 +1,15 @@
+<div style="text-align:left">
+  <div class="container">
+      <div class="row">
+        <div class="col-3">
+          <app-entrada (vehiculoGuardado)="consultarVehiculos()"></app-entrada>
+        </div>
+        <div class="col-6">          
+            <app-salida [vehiculos]="vehiculos"></app-salida>          
+        </div>
+        <div class="col-3">                   
+            <app-consulta></app-consulta>
+        </div>
+      </div>
+    </div>
+<div>
