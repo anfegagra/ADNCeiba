@@ -58,6 +58,7 @@ pipeline {
 		stage('Functional Tests') {
 			steps {
 				echo "------------>Functional Tests<------------"
+				sh 'chmod +x driver/chromedriver'
 				sh 'gradle --b ./build.gradle test --tests ceiba.CeibaEstacionamiento.dominio.funcionales.*'
 			
 			}
