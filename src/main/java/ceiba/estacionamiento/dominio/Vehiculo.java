@@ -1,26 +1,13 @@
 package ceiba.estacionamiento.dominio;
 
-import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Service;
 
 public class Vehiculo{
 	
 	private String placa;
-	
 	private String tipo;	
-	
 	private int cilindraje;
-	//private String estado;
-	//private Date horaIngreso;
-	//private Date horaSalida;
-	private String estado = "Activo";
-	
+	private String estado = "Activo";	
 	private Date fechaIngreso;
 	private String fechaAMostrar;
 	

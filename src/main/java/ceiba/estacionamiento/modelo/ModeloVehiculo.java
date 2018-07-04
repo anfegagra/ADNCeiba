@@ -25,11 +25,8 @@ public class ModeloVehiculo implements Serializable{
 	
 	@Column(name="tipo")
 	private String tipo;	
-	
 	private int cilindraje;
 	
-	//private Date horaIngreso;
-	//private Date horaSalida;
 	@Column(name="estado")
 	private String estado = "Activo";
 	

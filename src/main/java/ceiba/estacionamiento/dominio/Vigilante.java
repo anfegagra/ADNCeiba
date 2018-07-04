@@ -54,11 +54,9 @@ public class Vigilante {
 
 	public Vehiculo registrarIngresoVehiculo(Vehiculo vehiculo, Parqueadero parqueadero) {
 		Vehiculo vehiculoAIngresar = null;
-		if (vehiculo.getTipo().equals("C")) {
-			System.out.println("Nuevo carro");
+		if ("C".equals(vehiculo.getTipo())){
 			vehiculoAIngresar = new Carro(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
 		} else {
-			System.out.println("Nueva moto");
 			vehiculoAIngresar = new Moto(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
 		}
 		return hacerValidaciones(vehiculoAIngresar, parqueadero);
@@ -66,16 +64,11 @@ public class Vigilante {
 
 	public Vehiculo hacerValidaciones(Vehiculo v, Parqueadero p) {
 		Vehiculo vehiculo = null;
-		String placaActualizada = v.getPlaca().toUpperCase();
-		System.out.println(v.getPlaca());
-		v.setPlaca(placaActualizada);
-		System.out.println(v.getPlaca());
-		//boolean res = validacion.esPlacaValida(v.getPlaca());
-		if (validacion.esPlacaValida(v.getPlaca())){
-			if (v.getTipo().equals("C") && crud.validarCeldasDisponiblesCarro(v, p)) {
-				System.out.println("entro");
+		String placaActualizada = v.getPlaca().toUpperCase();		
+		v.setPlaca(placaActualizada);		
+		if (validacion.esPlacaValida(v.getPlaca())){			
+			if ("C".equals(v.getTipo()) && crud.validarCeldasDisponiblesCarro(v, p)) {				
 				vehiculo = crud.registrarVehiculo(v);
-
 			} else if (crud.validarCeldasDisponiblesMoto(v, p)) {
 				vehiculo = crud.registrarVehiculo(v);
 			}

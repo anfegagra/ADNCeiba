@@ -10,5 +10,4 @@ import ceiba.estacionamiento.modelo.ModeloVehiculo;
 @Repository
 public interface RepositorioVehiculo extends JpaRepository<ModeloVehiculo, String>{
 	List<ModeloVehiculo> findByTipo(String name);
-	//ModeloVehiculo findByPlaca(String name);
 }
