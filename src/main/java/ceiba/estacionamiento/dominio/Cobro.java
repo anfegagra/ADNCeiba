@@ -21,34 +21,24 @@ public class Cobro {
 	
 	public double registrarSalidaCarro(Duration duracionParqueo) {
 		if(obtenerMinutos(duracionParqueo) < MINUTOS_EN_NUEVE_HORAS){
-			System.out.println("Horas < 9");
 			return calcularCobroMenorANueveHorasCarro(duracionParqueo);
 		} else {
 			long cantidadDias = obtenerDias(duracionParqueo);
-			System.out.println("cantidad de dias: " + cantidadDias);
-			if(cantidadDias > 0) {			
-				System.out.println("Dias > 0");
+			if(cantidadDias > 0) {
 				return calcularCobroDiasMayorACeroCarro(duracionParqueo, cantidadDias);			
-			} else {
-				System.out.println("Dias = 0 y horas >= 9, entonces cobro el dia");
+			} else {				
 				return valorDiaCarro;
 			}
 		}
 	}	
 	
 	public double calcularCobroMenorANueveHorasCarro(Duration duracionParqueo){
-		int cantidadHoras = (int)(Math.ceil((float)obtenerMinutos(duracionParqueo)/60));
-		System.out.println(cantidadHoras);
+		int cantidadHoras = (int)(Math.ceil((float)obtenerMinutos(duracionParqueo)/60));		
 		return valorHoraCarro*cantidadHoras;
 	}
 	
 	public double calcularCobroDiasMayorACeroCarro(Duration duracionParqueo, long cantidadDias){
-		//long cantidadMinutosUltimoDia = obtenerMinutos(duracionParqueo)-cantidadDias*MINUTOS_DIA;
 		int cantidadHorasUlitmoDia = Math.abs((int)(Math.ceil((float)(obtenerMinutos(duracionParqueo)-cantidadDias*MINUTOS_DIA)/60)));
-		System.out.println(obtenerMinutos(duracionParqueo));
-		System.out.println(cantidadDias*MINUTOS_DIA);
-		//System.out.println(cantidadMinutosUltimoDia);
-		System.out.println(cantidadHorasUlitmoDia);
 		if(cantidadHorasUlitmoDia >= 9){
 			cantidadHorasUlitmoDia = 0;
 			cantidadDias = cantidadDias+1;							
@@ -61,11 +51,9 @@ public class Cobro {
 			return calcularCobroMenorANueveHorasMoto(duracionParqueo);
 		} else {
 			long cantidadDias= obtenerDias(duracionParqueo);
-			if(cantidadDias > 0) {		
-				System.out.println("Dias > 0");
+			if(cantidadDias > 0) {				
 				return calcularCobroDiasMayorACeroMoto(duracionParqueo, cantidadDias);
-			} else {
-				System.out.println("Dias = 0, entonces cobro el dia");
+			} else {				
 				return valorDiaMoto;		
 			}
 		}		
@@ -76,8 +64,7 @@ public class Cobro {
 		return valorHoraMoto*cantidadHoras;
 	}
 	
-	public double calcularCobroDiasMayorACeroMoto(Duration duracionParqueo, long cantidadDias){
-		//long cantidadMinutosUltimoDia = duracionParqueo.getStandardMinutes()-cantidadDias*MINUTOS_DIA;
+	public double calcularCobroDiasMayorACeroMoto(Duration duracionParqueo, long cantidadDias){		
 		int cantidadHorasUlitmoDia = Math.abs((int)(Math.ceil((float)(obtenerMinutos(duracionParqueo)-cantidadDias*MINUTOS_DIA)/60)));
 		if(cantidadHorasUlitmoDia >= 9){
 			cantidadDias = cantidadDias+1;
