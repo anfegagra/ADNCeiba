@@ -19,8 +19,8 @@ import ceiba.estacionamiento.dominio.Parqueadero;
 import ceiba.estacionamiento.dominio.Validacion;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
-import ceiba.estacionamiento.testdatabuilder.CarroTestDataBuilder;
-import ceiba.estacionamiento.testdatabuilder.MotoTestDataBuilder;
+import ceiba.estacionamiento.test.testdatabuilder.CarroTestDataBuilder;
+import ceiba.estacionamiento.test.testdatabuilder.MotoTestDataBuilder;
 
 public class VigilanteTest {
 	

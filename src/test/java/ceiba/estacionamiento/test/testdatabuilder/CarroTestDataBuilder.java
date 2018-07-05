@@ -1,4 +1,4 @@
-package ceiba.estacionamiento.testdatabuilder;
+package ceiba.estacionamiento.test.testdatabuilder;
 
 import ceiba.estacionamiento.dominio.Carro;
 
