@@ -50,17 +50,17 @@ dependencies {
 test{
 	jacoco{
 		append=false
-		destinationFile =file("build/jacoco/jacocoTest.exec")
+		destinationFile =file("build/jacoco/jacocoUnitTest.exec")
 	}
-	reports.junitXml.destination=file("build/jacoco/test-results")
+	reports.junitXml.destination=file("build/jacoco/test-results/unitTest")
 }
 
 integrationTest{
 	jacoco{
 		append=false
-		destinationFile =file("build/jacoco/jacocoTest.exec")
+		destinationFile =file("build/jacoco/jacocoIntegrationTest.exec")
 	}
-	reports.junitXml.destination=file("build/jacoco/integrationtest-results")
+	reports.junitXml.destination=file("build/jacoco/test-results/integrationTest")
 }
 
 functionalTest{
