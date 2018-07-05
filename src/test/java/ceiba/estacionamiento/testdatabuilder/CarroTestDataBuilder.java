@@ -1,7 +1,5 @@
 package ceiba.estacionamiento.testdatabuilder;
 
-import java.util.Date;
-
 import ceiba.estacionamiento.dominio.Carro;
 
 public class CarroTestDataBuilder {
