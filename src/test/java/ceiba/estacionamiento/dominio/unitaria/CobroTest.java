@@ -11,7 +11,7 @@ import org.mockito.Spy;
 
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Vehiculo;
-import ceiba.estacionamiento.test.testdatabuilder.MotoTestDataBuilder;
+import ceiba.estacionamiento.testdatabuilder.MotoTestDataBuilder;
 
 public class CobroTest {
 	
