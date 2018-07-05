@@ -38,7 +38,7 @@ public class Cobro {
 	}
 	
 	public double calcularCobroDiasMayorACeroCarro(Duration duracionParqueo, long cantidadDias){
-		int cantidadHorasUlitmoDia = Math.abs((int)(Math.ceil((float)(obtenerMinutos(duracionParqueo)-cantidadDias*MINUTOS_DIA)/60)));
+		int cantidadHorasUlitmoDia = (int)(Math.ceil((float)(obtenerMinutos(duracionParqueo)-cantidadDias*MINUTOS_DIA)/60));
 		if(cantidadHorasUlitmoDia >= 9){
 			cantidadHorasUlitmoDia = 0;
 			cantidadDias = cantidadDias+1;							
@@ -65,7 +65,7 @@ public class Cobro {
 	}
 	
 	public double calcularCobroDiasMayorACeroMoto(Duration duracionParqueo, long cantidadDias){		
-		int cantidadHorasUlitmoDia = Math.abs((int)(Math.ceil((float)(obtenerMinutos(duracionParqueo)-cantidadDias*MINUTOS_DIA)/60)));
+		int cantidadHorasUlitmoDia = (int)(Math.ceil((float)(obtenerMinutos(duracionParqueo)-cantidadDias*MINUTOS_DIA)/60));
 		if(cantidadHorasUlitmoDia >= 9){
 			cantidadDias = cantidadDias+1;
 			cantidadHorasUlitmoDia = 0;

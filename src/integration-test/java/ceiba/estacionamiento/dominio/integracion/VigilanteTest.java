@@ -1,27 +1,18 @@
 package ceiba.estacionamiento.dominio.integracion;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-import java.util.Date;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import ceiba.estacionamiento.controlador.Crud;
-import ceiba.estacionamiento.dominio.Carro;
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Fecha;
-import ceiba.estacionamiento.dominio.Moto;
 import ceiba.estacionamiento.dominio.Parqueadero;
 import ceiba.estacionamiento.dominio.Validacion;
 import ceiba.estacionamiento.dominio.Vehiculo;
@@ -56,12 +47,10 @@ public class VigilanteTest {
 		//Arrange
 		Vigilante vigilante = new Vigilante(validacion, crud);
 		Vehiculo vehiculo = new CarroTestDataBuilder().withCilindraje(2000).build();
-		//System.out.println("1: " + vehiculo.getPlaca());
 		Parqueadero parqueadero = new Parqueadero();
 		
 		//Act		
 		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
-		//System.out.println("2: " + resultadoVehiculo.getPlaca());
 		
 		//Assert
 	    assertEquals(vehiculo.getPlaca(), resultadoVehiculo.getPlaca());

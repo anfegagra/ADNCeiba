@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
-import org.hibernate.query.criteria.internal.expression.SearchedCaseExpression.WhenClause;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,10 +13,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import ceiba.estacionamiento.controlador.Crud;
-import ceiba.estacionamiento.dominio.Carro;
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Fecha;
-import ceiba.estacionamiento.dominio.Moto;
 import ceiba.estacionamiento.dominio.Parqueadero;
 import ceiba.estacionamiento.dominio.Validacion;
 import ceiba.estacionamiento.dominio.Vehiculo;
@@ -25,8 +22,6 @@ import ceiba.estacionamiento.dominio.Vigilante;
 import ceiba.estacionamiento.testdatabuilder.CarroTestDataBuilder;
 import ceiba.estacionamiento.testdatabuilder.MotoTestDataBuilder;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
 public class VigilanteTest {
 	
 	@Mock
@@ -185,7 +180,7 @@ public class VigilanteTest {
 	@Test
 	public void testRegistrarSalidaVehiculoCarro(){
 		//Arrange
-		double totalAPagar = 5000;
+		double totalAPagar = 4000;
 		String placa = "GFU123";
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
 		Parqueadero parqueadero = new Parqueadero();
@@ -193,7 +188,7 @@ public class VigilanteTest {
 		Mockito.doReturn(vehiculo).when(mockCrud).registrarSalida(placa, parqueadero);
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 6, 00))).when(mockFecha).obtenerFechaEntrada(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 10, 00))).when(mockFecha).obtenerFechaActual();
-		Mockito.doReturn((double)5000).when(mockCobro).registrarSalidaCarro(Mockito.any());
+		Mockito.doReturn((double)4000).when(mockCobro).registrarSalidaCarro(Mockito.any());
 		
 		//Act
 		double resultado = vigilante.registrarSalidaVehiculo(placa, parqueadero);
