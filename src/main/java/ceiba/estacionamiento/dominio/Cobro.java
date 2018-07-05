@@ -34,7 +34,7 @@ public class Cobro {
 	
 	public double calcularCobroMenorANueveHorasCarro(Duration duracionParqueo){
 		int cantidadHoras = (int)(Math.ceil((float)obtenerMinutos(duracionParqueo)/60));		
-		return valorHoraCarro*cantidadHoras;
+		return (double)valorHoraCarro*cantidadHoras;
 	}
 	
 	public double calcularCobroDiasMayorACeroCarro(Duration duracionParqueo, long cantidadDias){
@@ -43,7 +43,7 @@ public class Cobro {
 			cantidadHorasUlitmoDia = 0;
 			cantidadDias = cantidadDias+1;							
 		}
-		return valorDiaCarro*cantidadDias + valorHoraCarro*cantidadHorasUlitmoDia;	
+		return (double)valorDiaCarro*cantidadDias + valorHoraCarro*cantidadHorasUlitmoDia;	
 	}
 	
 	public double registrarSalidaMoto(Duration duracionParqueo){	
@@ -61,7 +61,7 @@ public class Cobro {
 	
 	public double calcularCobroMenorANueveHorasMoto(Duration duracionParqueo){
 		int cantidadHoras = (int)(Math.ceil((float)obtenerMinutos(duracionParqueo)/60));
-		return valorHoraMoto*cantidadHoras;
+		return (double)valorHoraMoto*cantidadHoras;
 	}
 	
 	public double calcularCobroDiasMayorACeroMoto(Duration duracionParqueo, long cantidadDias){		
@@ -70,7 +70,7 @@ public class Cobro {
 			cantidadDias = cantidadDias+1;
 			cantidadHorasUlitmoDia = 0;
 		}
-		return valorDiaMoto*cantidadDias + valorHoraMoto*cantidadHorasUlitmoDia;
+		return (double)valorDiaMoto*cantidadDias + valorHoraMoto*cantidadHorasUlitmoDia;
 	}
 	
 	public long obtenerMinutos(Duration duracionParqueo){
