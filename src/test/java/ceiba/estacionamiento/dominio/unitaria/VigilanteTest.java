@@ -15,7 +15,6 @@ import org.mockito.Spy;
 import ceiba.estacionamiento.controlador.Crud;
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Fecha;
-import ceiba.estacionamiento.dominio.Parqueadero;
 import ceiba.estacionamiento.dominio.Validacion;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
@@ -47,11 +46,10 @@ public class VigilanteTest {
 	public void testRegistrarIngresoVehiculoTipoCarro() {
 		//Arrange
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
-		Parqueadero parqueadero = new Parqueadero();
-		Mockito.doReturn(vehiculo).when(spyVigilante).hacerValidaciones(Mockito.any(), Mockito.any());
+		Mockito.doReturn(vehiculo).when(spyVigilante).hacerValidaciones(Mockito.any());
 		
 		//Act		
-		Vehiculo resultadoVehiculo = spyVigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
+		Vehiculo resultadoVehiculo = spyVigilante.registrarIngresoVehiculo(vehiculo);
 		
 		//Assert
 	    assertEquals(vehiculo, resultadoVehiculo);
@@ -61,11 +59,10 @@ public class VigilanteTest {
 	public void testRegistrarIngresoVehiculoTipoMoto() {
 		//Arrange
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
-		Parqueadero parqueadero = new Parqueadero();
-		Mockito.doReturn(vehiculo).when(spyVigilante).hacerValidaciones(Mockito.any(), Mockito.any());
+		Mockito.doReturn(vehiculo).when(spyVigilante).hacerValidaciones(Mockito.any());
 		
 		//Act		
-		Vehiculo resultadoVehiculo = spyVigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
+		Vehiculo resultadoVehiculo = spyVigilante.registrarIngresoVehiculo(vehiculo);
 		
 		//Assert
 	    assertEquals(vehiculo, resultadoVehiculo);
@@ -77,11 +74,10 @@ public class VigilanteTest {
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new MotoTestDataBuilder().withPlaca("ASD12E").build();
 		Vigilante vigilante = new Vigilante(mockValidacion);
-		Parqueadero parqueadero = new Parqueadero();
 		Mockito.doReturn(false).when(mockValidacion).esPlacaValida(Mockito.anyString());
 		
 		//Act
-		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo, parqueadero);
+		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo);
 		
 		//Assert
 		assertEquals(esperado, resultado);
@@ -91,15 +87,14 @@ public class VigilanteTest {
 	@Test
 	public void testHacerValidacionesConPlacaValidaCarroYHayEspacio(){
 		//Arrange
-		Parqueadero parqueadero = new Parqueadero();
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
 		Vigilante vigilante = new Vigilante(mockValidacion, mockCrud);
 		Mockito.doReturn(true).when(mockValidacion).esPlacaValida(Mockito.anyString());
-		Mockito.doReturn(true).when(mockCrud).validarCeldasDisponiblesCarro(vehiculo, parqueadero);
+		Mockito.doReturn(true).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		
 		//Act
-		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo, parqueadero);
+		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo);
 		
 		//Assert
 		assertEquals(esperado, resultado);
@@ -108,16 +103,15 @@ public class VigilanteTest {
 	@Test
 	public void testHacerValidacionesConPlacaValidaCarroPeroNoEspacio() {		
 		//Arrange
-		Parqueadero parqueadero = new Parqueadero();
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
 		Vigilante vigilante = new Vigilante(mockValidacion, mockCrud);
 		Mockito.doReturn(true).when(mockValidacion).esPlacaValida(Mockito.anyString());
-		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponiblesCarro(vehiculo, parqueadero);
-		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponiblesMoto(vehiculo, parqueadero);
+		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
+		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		
 		//Act
-		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo, parqueadero);
+		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo);
 		
 		//Assert
 		assertEquals(esperado, resultado);
@@ -127,16 +121,14 @@ public class VigilanteTest {
 	@Test
 	public void testHacerValidacionesConPlacaValidaMotoYHayEspacio() {
 		//Arrange
-		Parqueadero parqueadero = new Parqueadero();
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
 		Vigilante vigilante = new Vigilante(mockValidacion, mockCrud);
 		Mockito.doReturn(true).when(mockValidacion).esPlacaValida(Mockito.anyString());
-		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponiblesCarro(vehiculo, parqueadero);
-		Mockito.doReturn(true).when(mockCrud).validarCeldasDisponiblesMoto(vehiculo, parqueadero);
+		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		
 		//Act
-		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo, parqueadero);
+		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo);
 		
 		//Assert
 		assertEquals(esperado, resultado);
@@ -146,16 +138,15 @@ public class VigilanteTest {
 	@Test
 	public void testHacerValidacionesConPlacaValidaMotoPeroNoEspacio() {		
 		//Arrange
-		Parqueadero parqueadero = new Parqueadero();
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
 		Vigilante vigilante = new Vigilante(mockValidacion, mockCrud);
 		Mockito.doReturn(true).when(mockValidacion).esPlacaValida(Mockito.anyString());
-		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponiblesCarro(vehiculo, parqueadero);
-		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponiblesMoto(vehiculo, parqueadero);
+		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
+		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		
 		//Act
-		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo, parqueadero);
+		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo);
 		
 		//Assert
 		assertEquals(esperado, resultado);		
@@ -166,12 +157,11 @@ public class VigilanteTest {
 		//Arrange
 		double totalAPagar = 0;
 		String placa = "ERT45I";
-		Parqueadero parqueadero = new Parqueadero();
 		Vigilante vigilante = new Vigilante(mockCrud);
-		Mockito.doReturn(null).when(mockCrud).registrarSalida(placa, parqueadero);
+		Mockito.doReturn(null).when(mockCrud).registrarSalida(Mockito.any());
 		
 		//Act
-		double resultado = vigilante.registrarSalidaVehiculo(placa, parqueadero);
+		double resultado = vigilante.registrarSalidaVehiculo(placa);
 		
 		//Assert
 		assertEquals(totalAPagar, resultado, 0);
@@ -183,15 +173,14 @@ public class VigilanteTest {
 		double totalAPagar = 4000;
 		String placa = "GFU123";
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
-		Parqueadero parqueadero = new Parqueadero();
 		Vigilante vigilante = new Vigilante(mockCrud, mockFecha, mockCobro);
-		Mockito.doReturn(vehiculo).when(mockCrud).registrarSalida(placa, parqueadero);
+		Mockito.doReturn(vehiculo).when(mockCrud).registrarSalida(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 6, 00))).when(mockFecha).obtenerFechaEntrada(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 10, 00))).when(mockFecha).obtenerFechaActual();
 		Mockito.doReturn((double)4000).when(mockCobro).registrarSalidaCarro(Mockito.any());
 		
 		//Act
-		double resultado = vigilante.registrarSalidaVehiculo(placa, parqueadero);
+		double resultado = vigilante.registrarSalidaVehiculo(placa);
 		
 		//Assert
 		assertEquals(totalAPagar, resultado, 0);
@@ -203,16 +192,15 @@ public class VigilanteTest {
 		double totalAPagar = 500;
 		String placa = "KTF12A";
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
-		Parqueadero parqueadero = new Parqueadero();
 		Vigilante vigilante = new Vigilante(mockCrud, mockFecha, mockCobro);
-		Mockito.doReturn(vehiculo).when(mockCrud).registrarSalida(placa, parqueadero);
+		Mockito.doReturn(vehiculo).when(mockCrud).registrarSalida(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 6, 00))).when(mockFecha).obtenerFechaEntrada(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 7, 00))).when(mockFecha).obtenerFechaActual();
 		Mockito.doReturn((double)500).when(mockCobro).registrarSalidaMoto(Mockito.any());
 		Mockito.doReturn((double)0).when(mockCobro).calcularCobroCilindraje(Mockito.any());
 		
 		//Act
-		double resultado = vigilante.registrarSalidaVehiculo(placa, parqueadero);
+		double resultado = vigilante.registrarSalidaVehiculo(placa);
 		
 		//Assert
 		assertEquals(totalAPagar, resultado, 0);

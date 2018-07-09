@@ -52,32 +52,28 @@ public class Vigilante {
 		this.cobro = cobro;
 	}
 
-	public Vehiculo registrarIngresoVehiculo(Vehiculo vehiculo, Parqueadero parqueadero) {
+	public Vehiculo registrarIngresoVehiculo(Vehiculo vehiculo) {
 		Vehiculo vehiculoAIngresar = null;
 		if ("C".equals(vehiculo.getTipo())){
 			vehiculoAIngresar = new Carro(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
 		} else {
 			vehiculoAIngresar = new Moto(vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getCilindraje());
 		}
-		return hacerValidaciones(vehiculoAIngresar, parqueadero);
+		return hacerValidaciones(vehiculoAIngresar);
 	}
 
-	public Vehiculo hacerValidaciones(Vehiculo v, Parqueadero p) {
+	public Vehiculo hacerValidaciones(Vehiculo v) {
 		Vehiculo vehiculo = null;
 		String placaActualizada = v.getPlaca().toUpperCase();		
 		v.setPlaca(placaActualizada);		
-		if (validacion.esPlacaValida(v.getPlaca())){			
-			if ("C".equals(v.getTipo()) && crud.validarCeldasDisponiblesCarro(v, p)) {				
-				vehiculo = crud.registrarVehiculo(v);
-			} else if (crud.validarCeldasDisponiblesMoto(v, p)) {
-				vehiculo = crud.registrarVehiculo(v);
-			}
+		if (validacion.esPlacaValida(v.getPlaca()) && crud.validarCeldasDisponibles(v.getTipo())){			
+			vehiculo = crud.registrarVehiculo(v);			
 		}
 		return vehiculo;
 	}
 	
-	public double registrarSalidaVehiculo(String placa, Parqueadero parqueadero){
-		Vehiculo vehiculoASalir = crud.registrarSalida(placa, parqueadero);
+	public double registrarSalidaVehiculo(String placa){
+		Vehiculo vehiculoASalir = crud.registrarSalida(placa);
 		double totalAPagar = 0;
 		if(vehiculoASalir != null) {
 			Date fechaBD = vehiculoASalir.getFechaIngreso();

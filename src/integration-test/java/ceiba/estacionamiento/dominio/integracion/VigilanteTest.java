@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ceiba.estacionamiento.controlador.Crud;
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Fecha;
-import ceiba.estacionamiento.dominio.Parqueadero;
 import ceiba.estacionamiento.dominio.Validacion;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
@@ -47,10 +46,9 @@ public class VigilanteTest {
 		//Arrange
 		Vigilante vigilante = new Vigilante(validacion, crud);
 		Vehiculo vehiculo = new CarroTestDataBuilder().withCilindraje(2000).build();
-		Parqueadero parqueadero = new Parqueadero();
 		
 		//Act		
-		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
+		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo);
 		
 		//Assert
 	    assertEquals(vehiculo.getPlaca(), resultadoVehiculo.getPlaca());
@@ -67,10 +65,9 @@ public class VigilanteTest {
 		
 		Vigilante vigilante = new Vigilante(validacion, crud);
 		Vehiculo vehiculo = new CarroTestDataBuilder().withCilindraje(2000).build();
-		Parqueadero parqueadero = new Parqueadero();
 		
 		//Act		
-		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
+		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo);
 		
 		//Assert
 	    assertNull(resultadoVehiculo);
@@ -80,11 +77,10 @@ public class VigilanteTest {
 	public void testRegistrarIngresoVehiculoTipoMoto() {
 		//Arrange
 		Vigilante vigilante = new Vigilante(validacion, crud);
-		Vehiculo vehiculo = new MotoTestDataBuilder().withCilindraje(600).build();
-		Parqueadero parqueadero = new Parqueadero();		
+		Vehiculo vehiculo = new MotoTestDataBuilder().withCilindraje(600).build();	
 		
 		//Act		
-		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
+		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo);
 		
 		//Assert
 	    assertEquals(vehiculo.getPlaca(), resultadoVehiculo.getPlaca());
@@ -127,11 +123,10 @@ public class VigilanteTest {
 		repositorioVehiculo.save(modeloVehiculo);
 		
 		Vigilante vigilante = new Vigilante(validacion, crud);
-		Vehiculo vehiculo = new CarroTestDataBuilder().withPlaca("EJK426").build();
-		Parqueadero parqueadero = new Parqueadero();		
+		Vehiculo vehiculo = new CarroTestDataBuilder().withPlaca("EJK426").build();	
 		
 		//Act		
-		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
+		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo);
 		
 		//Assert
 	    assertNull(resultadoVehiculo);
@@ -143,11 +138,10 @@ public class VigilanteTest {
 		//Arrange
 		double total = 0;
 		String placa = "ERT45I";
-		Parqueadero parqueadero = new Parqueadero();
 		Vigilante vigilante = new Vigilante(crud, fecha, cobro);		
 		
 		//Act
-		double resultado = vigilante.registrarSalidaVehiculo(placa, parqueadero);
+		double resultado = vigilante.registrarSalidaVehiculo(placa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
@@ -160,11 +154,10 @@ public class VigilanteTest {
 		repositorioVehiculo.save(modeloVehiculo);
 		double total = 0;
 		String placa = "MKI789";
-		Parqueadero parqueadero = new Parqueadero();
 		Vigilante vigilante = new Vigilante(crud, fecha, cobro);		
 		
 		//Act
-		double resultado = vigilante.registrarSalidaVehiculo(placa, parqueadero);
+		double resultado = vigilante.registrarSalidaVehiculo(placa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
@@ -177,11 +170,10 @@ public class VigilanteTest {
 		repositorioVehiculo.save(modeloVehiculo);
 		double total = 0;
 		String placa = "TCX197";
-		Parqueadero parqueadero = new Parqueadero();
 		Vigilante vigilante = new Vigilante(crud, fecha, cobro);		
 		
 		//Act
-		double resultado = vigilante.registrarSalidaVehiculo(placa, parqueadero);
+		double resultado = vigilante.registrarSalidaVehiculo(placa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ceiba.estacionamiento.dominio.Parqueadero;
+import ceiba.estacionamiento.dominio.Celda;
+import ceiba.estacionamiento.dominio.CeldaFactory;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.repositorio.RepositorioVehiculo;
 import ceiba.estacionamiento.modelo.ModeloVehiculo;
@@ -24,9 +25,6 @@ import ceiba.estacionamiento.modelo.ModeloVehiculo;
 @RequestMapping("/ceiba")
 public class Crud {
 
-	public static final String REGISTRO_EXITOSO = "Se registro el ingreso del vehiculo exitosamente";
-	public static final String REGISTRO_FALLIDO = "Registro fallido. No hay celdas disponibles";
-	public static final String VEHICULO_YA_INGRESADO = "Registro fallido. El vehiculo ya esta en el parqueadero";
 	public static final String INACTIVO = "Inactivo";
 	public static final String ACTIVO = "Activo";
 
@@ -56,27 +54,30 @@ public class Crud {
 		}
 	}
 	
-	public Vehiculo registrarSalida(String placa, Parqueadero parqueadero) {
-		
+	public Vehiculo registrarSalida(String placa) {	
 		ModeloVehiculo resultadoSalida = null;
-		
-		if(obtenerVehiculoPorPlaca(placa) != null) {
-			ModeloVehiculo modeloVehiculo = obtenerVehiculoPorPlaca(placa);
+		ModeloVehiculo modeloVehiculo = obtenerVehiculoPorPlaca(placa);
+		if (modeloVehiculo != null) {
+			CeldaFactory celdaFactory = new CeldaFactory();
+			Celda celda = celdaFactory.obtenerCeldas(modeloVehiculo.getTipo());
 			if(modeloVehiculo.getEstado().equals(INACTIVO)){
-				return null;				
-			} else {			
+				return null;
+			} else {	
 				modeloVehiculo.setEstado(INACTIVO);
-				resultadoSalida = repositorioVehiculo.save(modeloVehiculo);				
-				
-				if("C".equals(modeloVehiculo.getPlaca())) {
-					parqueadero.setCeldasDisponiblesCarro(parqueadero.getCeldasDisponiblesCarro()+1);
-				} else {
-					parqueadero.setCeldasDisponiblesMoto(parqueadero.getCeldasDisponiblesMoto()+1);
-				}
-				return convertirADominio(resultadoSalida);			
-			}			
+				resultadoSalida = repositorioVehiculo.save(modeloVehiculo);
+				aumentarCeldasDisponibles(modeloVehiculo.getTipo(), celda);	
+				return convertirADominio(resultadoSalida);
+			}	
 		} else {
 			return null;
+		}
+	}
+	
+	public void aumentarCeldasDisponibles(String tipo, Celda celda) {
+		if("C".equals(tipo)) {
+			celda.setCeldasDisponiblesCarro(celda.getCeldasDisponiblesCarro()+1);
+		} else {
+			celda.setCeldasDisponiblesMoto(celda.getCeldasDisponiblesMoto()+1);
 		}
 	}
 	
@@ -117,34 +118,35 @@ public class Crud {
 			return null;
 		}
 		return convertirADominio(resultadoBusqueda);		
-	}
-
-	public boolean validarCeldasDisponiblesMoto(Vehiculo vehiculo, Parqueadero parqueadero) {
-		int ocupadas = obtenerCantidadCeldasDisponibles(vehiculo.getTipo());		
+	}	
+	
+	public boolean validarCeldasDisponibles(String tipo) {
+		int ocupadas = obtenerCantidadCeldasOcupadas(tipo);		
+		CeldaFactory celdaFactory = new CeldaFactory();
+		Celda celda = celdaFactory.obtenerCeldas(tipo);
 		int totalDisponibles;
-		if (parqueadero.getCeldasDisponiblesMoto() == 10) {
-			totalDisponibles = (parqueadero.getCeldasDisponiblesMoto() - ocupadas);
+		if("C".equals(tipo)){
+			celda.setCeldasDisponiblesCarro(celda.getCeldasDisponiblesCarro() - ocupadas);
+			totalDisponibles = celda.getCeldasDisponiblesCarro();
 		} else {
-			totalDisponibles = parqueadero.getCeldasDisponiblesMoto();
+			celda.setCeldasDisponiblesMoto(celda.getCeldasDisponiblesMoto() - ocupadas);
+			totalDisponibles = celda.getCeldasDisponiblesMoto();
 		}
-		actualizarCeldasDisponibles(totalDisponibles, vehiculo.getTipo(), parqueadero);
-		return totalDisponibles > 0;
-	}
-
-	public boolean validarCeldasDisponiblesCarro(Vehiculo vehiculo, Parqueadero parqueadero) {
-		int ocupadas = obtenerCantidadCeldasDisponibles(vehiculo.getTipo());		
-		int totalDisponibles;
-		if (parqueadero.getCeldasDisponiblesCarro() == 20) {
-			totalDisponibles = (parqueadero.getCeldasDisponiblesCarro() - ocupadas);
-		} else {
-			totalDisponibles = parqueadero.getCeldasDisponiblesCarro();
-		}
-		actualizarCeldasDisponibles(totalDisponibles, vehiculo.getTipo(), parqueadero);
+		disminuirCeldasDisponibles(totalDisponibles, tipo, celda);
 		return totalDisponibles > 0;
 	}
 	
-	public int obtenerCantidadCeldasDisponibles(String tipoVehiculo) {
-
+	public void disminuirCeldasDisponibles(int totalDisponibles, String tipoVehiculo, Celda celda) {
+		if (totalDisponibles > 0) {
+			if ("C".equals(tipoVehiculo)) {
+				celda.setCeldasDisponiblesCarro(totalDisponibles - 1);
+			} else if ("M".equals(tipoVehiculo)) {
+				celda.setCeldasDisponiblesMoto(totalDisponibles - 1);
+			}
+		}
+	}
+	
+	public int obtenerCantidadCeldasOcupadas(String tipoVehiculo) {
 		List<ModeloVehiculo> lista = repositorioVehiculo.findByTipo(tipoVehiculo);
 		int cantidad = 0;
 		for (ModeloVehiculo listaFinal : lista) {
@@ -153,17 +155,7 @@ public class Crud {
 			}
 		}
 		return cantidad;
-	}
-
-	public void actualizarCeldasDisponibles(int totalDisponibles, String tipoVehiculo, Parqueadero parqueadero) {
-		if (totalDisponibles > 0) {
-			if ("C".equals(tipoVehiculo)) {
-				parqueadero.setCeldasDisponiblesCarro(totalDisponibles - 1);
-			} else {
-				parqueadero.setCeldasDisponiblesMoto(totalDisponibles - 1);
-			}
-		}
-	}
+	}	
 
 	public Vehiculo convertirADominio(ModeloVehiculo modeloVehiculo) {
 		Date fechaIngreso = modeloVehiculo.getFechaIngreso();

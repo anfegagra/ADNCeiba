@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ceiba.estacionamiento.dominio.Parqueadero;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
 
@@ -19,9 +18,6 @@ import ceiba.estacionamiento.dominio.Vigilante;
 @RestController
 @RequestMapping("/ceiba")
 public class ControladorParqueo {
-
-	@Autowired
-	Parqueadero parqueadero;
 	
 	@Autowired
 	Vigilante vigilante;
@@ -29,13 +25,13 @@ public class ControladorParqueo {
     // Registrar ingreso de un vehiculo - POST
 	@PostMapping("/vehiculos")
 	public Vehiculo registrarVehiculo(@RequestBody Vehiculo vehiculo) {
-		return vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);		
+		return vigilante.registrarIngresoVehiculo(vehiculo);		
 	}
 	
 	// Registrar la salida de un vehiculo y cobrar
 	@PostMapping("/vehiculos/salida/{placa}")
 	public double registrarSalidaYCobrar(@PathVariable(value = "placa") String placa) {
-		return vigilante.registrarSalidaVehiculo(placa, parqueadero);		
+		return vigilante.registrarSalidaVehiculo(placa);		
 	}
 	
 	// Obtener todos los vehiculos - GET
