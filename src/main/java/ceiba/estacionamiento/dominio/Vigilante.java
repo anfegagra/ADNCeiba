@@ -62,14 +62,14 @@ public class Vigilante {
 		return hacerValidaciones(vehiculoAIngresar);
 	}
 
-	public Vehiculo hacerValidaciones(Vehiculo v) {
-		Vehiculo vehiculo = null;
-		String placaActualizada = v.getPlaca().toUpperCase();		
-		v.setPlaca(placaActualizada);		
-		if (validacion.esPlacaValida(v.getPlaca()) && crud.validarCeldasDisponibles(v.getTipo())){			
-			vehiculo = crud.registrarVehiculo(v);			
+	public Vehiculo hacerValidaciones(Vehiculo vehiculo) {
+		//Vehiculo vehiculo = null;
+		String placaActualizada = vehiculo.getPlaca().toUpperCase();		
+		vehiculo.setPlaca(placaActualizada);		
+		if (validacion.esPlacaValida(vehiculo.getPlaca()) && crud.validarCeldasDisponibles(vehiculo.getTipo())){			
+			return crud.registrarVehiculo(vehiculo);			
 		}
-		return vehiculo;
+		return null;
 	}
 	
 	public double registrarSalidaVehiculo(String placa){
@@ -80,12 +80,12 @@ public class Vigilante {
 			DateTime fechaInicial = fecha.obtenerFechaEntrada(fechaBD);
 			DateTime fechaFinal = fecha.obtenerFechaActual();
 			Duration duracionParqueo = fecha.obtenerDuracionParqueo(fechaInicial, fechaFinal);			 
-			if ("C".equals(vehiculoASalir.getTipo())) {
-				totalAPagar = cobro.registrarSalidaCarro(duracionParqueo);
-			} else {
-				totalAPagar = cobro.registrarSalidaMoto(duracionParqueo);
-				totalAPagar = (totalAPagar!=0)?totalAPagar+cobro.calcularCobroCilindraje(vehiculoASalir):totalAPagar;
-			}
+			//if ("C".equals(vehiculoASalir.getTipo())) {
+			totalAPagar = cobro.registrarSalida(duracionParqueo, vehiculoASalir.getTipo(), vehiculoASalir.getCilindraje());
+			//} else {
+				//totalAPagar = cobro.registrarSalidaMoto(duracionParqueo);
+				//totalAPagar = (totalAPagar!=0)?totalAPagar+cobro.calcularCobroCilindraje(vehiculoASalir):totalAPagar;
+			//}
 			return totalAPagar;
 		} else {
 			return totalAPagar;
