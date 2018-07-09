@@ -44,10 +44,10 @@ public class CobroTest {
 		Duration duracionParqueo = new Duration(0);
 		Mockito.doReturn((long)2880).when(spyCobro).obtenerMinutos(Mockito.any());
 		Mockito.doReturn((long)2).when(spyCobro).obtenerDias(Mockito.any());
-		Mockito.doReturn((double)16000).when(spyCobro).calcularCobroDiasMayorACeroCarro(Mockito.any(), Mockito.anyLong());
+		Mockito.doReturn((double)16000).when(spyCobro).calcularCobroDiasMayorACero(Mockito.any(), Mockito.anyLong(), Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalidaCarro(duracionParqueo);
+		double resultado = spyCobro.registrarSalida(duracionParqueo, "C", 0);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
@@ -62,7 +62,7 @@ public class CobroTest {
 		Mockito.doReturn((long)0).when(spyCobro).obtenerDias(Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalidaCarro(duracionParqueo);
+		double resultado = spyCobro.registrarSalida(duracionParqueo, "C", 0);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
@@ -74,10 +74,10 @@ public class CobroTest {
 		double total = 500;
 		Duration duracionParqueo = new Duration(0);
 		Mockito.doReturn((long)1).when(spyCobro).obtenerMinutos(Mockito.any());
-		Mockito.doReturn((double)500).when(spyCobro).calcularCobroMenorANueveHorasMoto(Mockito.any());
+		Mockito.doReturn((double)500).when(spyCobro).calcularCobroMenorANueveHoras(Mockito.any(), Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalidaMoto(duracionParqueo);
+		double resultado = spyCobro.registrarSalida(duracionParqueo, "M", 200);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
@@ -90,10 +90,10 @@ public class CobroTest {
 		Duration duracionParqueo = new Duration(0);
 		Mockito.doReturn((long)2880).when(spyCobro).obtenerMinutos(Mockito.any());
 		Mockito.doReturn((long)2).when(spyCobro).obtenerDias(Mockito.any());
-		Mockito.doReturn((double)8000).when(spyCobro).calcularCobroDiasMayorACeroMoto(Mockito.any(), Mockito.anyLong());
+		Mockito.doReturn((double)8000).when(spyCobro).calcularCobroDiasMayorACero(Mockito.any(), Mockito.anyLong(), Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalidaMoto(duracionParqueo);
+		double resultado = spyCobro.registrarSalida(duracionParqueo, "M", 200);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
@@ -108,7 +108,7 @@ public class CobroTest {
 		Mockito.doReturn((long)0).when(spyCobro).obtenerDias(Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalidaMoto(duracionParqueo);
+		double resultado = spyCobro.registrarSalida(duracionParqueo, "M", 200);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
