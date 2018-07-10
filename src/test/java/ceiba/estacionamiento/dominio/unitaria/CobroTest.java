@@ -159,6 +159,22 @@ public class CobroTest {
 	}
 	
 	@Test
+	public void testCalcularCobroMenorANueveHorasMotoYCilindrajeMayorA500(){
+		//Arrange
+		TarifaFactory tarifaFactory = new TarifaFactory();
+		Tarifa tarifa = tarifaFactory.obtenerTarifa("M", 600);
+		double total = 3500;
+		Duration duracionParqueo = new Duration(0);
+		Mockito.doReturn((long)180).when(spyCobro).obtenerMinutos(Mockito.any());
+		
+		//Act
+		double resultado = spyCobro.calcularCobroMenorANueveHoras(duracionParqueo, tarifa);
+		
+		//Assert
+		assertEquals(total, resultado, 0);
+	}
+	
+	@Test
 	public void testCalcularCobroMenorANueveHorasCarro(){
 		//Arrange
 		TarifaFactory tarifaFactory = new TarifaFactory();

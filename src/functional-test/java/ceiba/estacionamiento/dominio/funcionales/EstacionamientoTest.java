@@ -46,8 +46,8 @@ public class EstacionamientoTest {
 	
 	@BeforeClass
 	public static void inicializarDriver(){
-		//System.setProperty("webdriver.chrome.driver", "driver/driver_windows/chromedriver.exe");
-		System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "driver/driver_windows/chromedriver.exe");
+		//System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless");
 		driver = new ChromeDriver(options);
