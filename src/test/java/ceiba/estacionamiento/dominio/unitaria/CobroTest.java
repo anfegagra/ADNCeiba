@@ -12,8 +12,6 @@ import org.mockito.Spy;
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Tarifa;
 import ceiba.estacionamiento.dominio.TarifaFactory;
-import ceiba.estacionamiento.dominio.Vehiculo;
-import ceiba.estacionamiento.testdatabuilder.MotoTestDataBuilder;
 
 public class CobroTest {
 	
@@ -25,7 +23,7 @@ public class CobroTest {
 	}
 
 	@Test
-	public void testRegistrarSalidaCarroMenorANueveHoras() {
+	public void testGenerarCobroCarroMenorANueveHoras() {
 		//Arrange
 		double total = 1000;
 		Duration duracionParqueo = new Duration(0);
@@ -33,14 +31,14 @@ public class CobroTest {
 		Mockito.doReturn((double)1000).when(spyCobro).calcularCobroMenorANueveHoras(Mockito.any(), Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalida(duracionParqueo, "C", 0);
+		double resultado = spyCobro.generarCobro(duracionParqueo, "C", 0);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
 	}
 	
 	@Test
-	public void testRegistrarSalidaCarroMayorAUnDia() {
+	public void testGenerarCobroCarroMayorAUnDia() {
 		//Arrange
 		double total = 16000;
 		Duration duracionParqueo = new Duration(0);
@@ -49,14 +47,14 @@ public class CobroTest {
 		Mockito.doReturn((double)16000).when(spyCobro).calcularCobroDiasMayorACero(Mockito.any(), Mockito.anyLong(), Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalida(duracionParqueo, "C", 0);
+		double resultado = spyCobro.generarCobro(duracionParqueo, "C", 0);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
 	}
 	
 	@Test
-	public void testRegistrarSalidaCarroDiaIgualACeroYMayorANueveHoras() {
+	public void testGenerarCobroCarroDiaIgualACeroYMayorANueveHoras() {
 		//Arrange
 		double total = 8000;
 		Duration duracionParqueo = new Duration(0);
@@ -64,14 +62,14 @@ public class CobroTest {
 		Mockito.doReturn((long)0).when(spyCobro).obtenerDias(Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalida(duracionParqueo, "C", 0);
+		double resultado = spyCobro.generarCobro(duracionParqueo, "C", 0);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
 	}
 
 	@Test
-	public void testRegistrarSalidaMotoMenorANueveHoras() {
+	public void testGenerarCobroMotoMenorANueveHoras() {
 		//Arrange
 		double total = 500;
 		Duration duracionParqueo = new Duration(0);
@@ -79,14 +77,14 @@ public class CobroTest {
 		Mockito.doReturn((double)500).when(spyCobro).calcularCobroMenorANueveHoras(Mockito.any(), Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalida(duracionParqueo, "M", 200);
+		double resultado = spyCobro.generarCobro(duracionParqueo, "M", 200);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
 	}
 	
 	@Test
-	public void testRegistrarSalidaMotoMayorAUnDia() {
+	public void testGenerarCobroMotoMayorAUnDia() {
 		//Arrange
 		double total = 8000;
 		Duration duracionParqueo = new Duration(0);
@@ -95,14 +93,14 @@ public class CobroTest {
 		Mockito.doReturn((double)8000).when(spyCobro).calcularCobroDiasMayorACero(Mockito.any(), Mockito.anyLong(), Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalida(duracionParqueo, "M", 200);
+		double resultado = spyCobro.generarCobro(duracionParqueo, "M", 200);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
 	}
 	
 	@Test
-	public void testRegistrarSalidaMotoDiaIgualACeroYMayorANueveHoras() {
+	public void testGenerarCobroMotoDiaIgualACeroYMayorANueveHoras() {
 		//Arrange
 		double total = 4000;
 		Duration duracionParqueo = new Duration(0);
@@ -110,7 +108,7 @@ public class CobroTest {
 		Mockito.doReturn((long)0).when(spyCobro).obtenerDias(Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.registrarSalida(duracionParqueo, "M", 200);
+		double resultado = spyCobro.generarCobro(duracionParqueo, "M", 200);
 		
 		//Assert
 		assertEquals(total, resultado, 0);		

@@ -177,7 +177,7 @@ public class VigilanteTest {
 		Mockito.doReturn(vehiculo).when(mockCrud).registrarSalida(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 6, 00))).when(mockFecha).obtenerFechaEntrada(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 10, 00))).when(mockFecha).obtenerFechaActual();
-		Mockito.doReturn((double)4000).when(mockCobro).registrarSalida(Mockito.any(), Mockito.any(), Mockito.anyInt());
+		Mockito.doReturn((double)4000).when(mockCobro).generarCobro(Mockito.any(), Mockito.any(), Mockito.anyInt());
 		
 		//Act
 		double resultado = vigilante.registrarSalidaVehiculo(placa);
@@ -196,7 +196,7 @@ public class VigilanteTest {
 		Mockito.doReturn(vehiculo).when(mockCrud).registrarSalida(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 6, 00))).when(mockFecha).obtenerFechaEntrada(Mockito.any());
 		Mockito.doReturn(new DateTime(new Date(2018, 6, 27, 7, 00))).when(mockFecha).obtenerFechaActual();
-		Mockito.doReturn((double)500).when(mockCobro).registrarSalida(Mockito.any(), Mockito.any(), Mockito.anyInt());
+		Mockito.doReturn((double)500).when(mockCobro).generarCobro(Mockito.any(), Mockito.any(), Mockito.anyInt());
 		//Mockito.doReturn((double)0).when(mockCobro).calcularCobroCilindraje(Mockito.any());
 		
 		//Act
