@@ -3,6 +3,9 @@ package ceiba.estacionamiento.dominio.integracion;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import javax.validation.constraints.AssertTrue;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,35 +89,6 @@ public class VigilanteTest {
 	    assertEquals(vehiculo.getPlaca(), resultadoVehiculo.getPlaca());
 	}
 	
-	// Retorna null si es un dia diferente a Lunes o Domingo
-	/*@Test
-	public void testRegistrarIngresoVehiculoTipoCarroPlacaInvalida() {
-		//Arrange
-		Vigilante vigilante = new Vigilante(validacion, crud);
-		Vehiculo vehiculo = new CarroTestDataBuilder().withPlaca("AER147").build();
-		Parqueadero parqueadero = new Parqueadero();		
-		
-		//Act		
-		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
-		
-		//Assert
-	    assertNull(resultadoVehiculo);
-	}*/
-	
-	/*@Test
-	public void testRegistrarIngresoVehiculoTipoMotoPlacaInvalida() {
-		//Arrange
-		Vigilante vigilante = new Vigilante(validacion, crud);
-		Vehiculo vehiculo = new MotoTestDataBuilder().withPlaca("AFH42J").build();
-		Parqueadero parqueadero = new Parqueadero();		
-		
-		//Act		
-		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo, parqueadero);
-		
-		//Assert
-	    assertNull(resultadoVehiculo);
-	}*/
-	
 	// Retorna null porque el vehiculo a ingresar ya se encuentra en el parqueadero
 	@Test
 	public void testRegistrarIngresoVehiculoTipoCarroPlacaValidaPeroYaEsta() {
@@ -134,6 +108,23 @@ public class VigilanteTest {
 	}
 	
 	@Test
+	public void testRegistrarIngresoVehiculoTipoCarroPlacaValidaYEstadoInactivo() {
+		//Arrange
+		ModeloVehiculo modeloVehiculo = new ModeloVehiculo("EJK426", "C", 1250, "Inactivo");
+		repositorioVehiculo.save(modeloVehiculo);
+		
+		Vigilante vigilante = new Vigilante(validacion, crud);
+		Vehiculo vehiculo = new CarroTestDataBuilder().withPlaca("EJK426").build();	
+		
+		//Act		
+		Vehiculo resultadoVehiculo = vigilante.registrarIngresoVehiculo(vehiculo);
+		
+		//Assert
+	    Assert.assertTrue(resultadoVehiculo.getEstado().equals("Activo"));
+	    repositorioVehiculo.deleteAll();
+	}
+	
+	@Test
 	public void testRegistrarSalidaVehiculoNoExistente(){
 		//Arrange
 		double total = 0;
@@ -145,6 +136,22 @@ public class VigilanteTest {
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
+	}
+	
+	@Test
+	public void testRegistrarSalidaVehiculoEstadoInactivo(){
+		//Arrange
+		ModeloVehiculo modeloVehiculo = new ModeloVehiculo("EJK426", "C", 1250, "Inactivo");
+		repositorioVehiculo.save(modeloVehiculo);
+		double total = 0;
+		String placa = "EJK426";
+		Vigilante vigilante = new Vigilante(crud, fecha, cobro);		
+		
+		//Act
+		double resultado = vigilante.registrarSalidaVehiculo(placa);
+		
+		//Assert
+		assertEquals(total, resultado, 0);
 	}
 	
 	@Test
@@ -179,23 +186,4 @@ public class VigilanteTest {
 		assertEquals(total, resultado, 0);		
 	}
 	
-	// Un dia y alunas horas
-	/*@Test
-	public void testRegistrarSalidaVehiculoCarro(){
-		//Arrange
-		
-		double total = 11000;
-		String placa = "JUN258";
-		Parqueadero parqueadero = new Parqueadero();
-		Vigilante vigilante = new Vigilante(crud, fecha, cobro);		
-		
-		//Act
-		double resultado = vigilante.registrarSalidaVehiculo(placa, parqueadero);
-		
-		//Assert
-		//assertEquals(total, resultado, 0);
-		assertEquals(total, resultado, 0);
-		
-	}*/
-
 }
