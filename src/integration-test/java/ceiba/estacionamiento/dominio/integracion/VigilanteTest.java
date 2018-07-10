@@ -3,7 +3,7 @@ package ceiba.estacionamiento.dominio.integracion;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import javax.validation.constraints.AssertTrue;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -74,6 +74,7 @@ public class VigilanteTest {
 		
 		//Assert
 	    assertNull(resultadoVehiculo);
+	    repositorioVehiculo.deleteAll();
 	}
 	
 	@Test
@@ -184,6 +185,86 @@ public class VigilanteTest {
 		
 		//Assert
 		assertEquals(total, resultado, 0);		
+	}	
+	
+	@Test
+	public void testConsultarVehiculos(){
+		//Arrange
+		Vigilante vigilante = new Vigilante(crud);
+		for(int i=0; i<21; i++){
+			String placa = "TGB12" + i;
+			ModeloVehiculo modeloVehiculo = new ModeloVehiculo(placa, "C", 1250, "Activo");
+			repositorioVehiculo.save(modeloVehiculo);			
+		}
+		
+		//Act
+		List<Vehiculo> resultado = vigilante.consultarVehiculos();
+		
+		//Assert
+		Assert.assertFalse(resultado.isEmpty());
+		repositorioVehiculo.deleteAll();
+	}
+	
+	@Test
+	public void testConsultarVehiculosListaVacia(){
+		//Arrange
+		Vigilante vigilante = new Vigilante(crud);		
+		
+		//Act
+		List<Vehiculo> resultado = vigilante.consultarVehiculos();
+		
+		//Assert
+		Assert.assertTrue(resultado.isEmpty());
+	}
+	
+	@Test
+	public void testConsultarVehiculosYUnVehiculoEstadoInactivo(){
+		//Arrange
+		Vigilante vigilante = new Vigilante(crud);
+		ModeloVehiculo modeloVehiculoEstadoInactivo = new ModeloVehiculo("KKK777", "C", 1250, "Inactivo");
+		repositorioVehiculo.save(modeloVehiculoEstadoInactivo);
+		for(int i=0; i<5; i++){
+			String placa = "TGB12" + i;
+			ModeloVehiculo modeloVehiculo = new ModeloVehiculo(placa, "C", 1250, "Activo");
+			repositorioVehiculo.save(modeloVehiculo);			
+		}
+		
+		//Act
+		List<Vehiculo> resultado = vigilante.consultarVehiculos();
+		
+		//Assert
+		Assert.assertFalse(resultado.isEmpty());
+		repositorioVehiculo.deleteAll();
+	}
+	
+	@Test
+	public void testConsultarPorPlacaEstadoInactivo(){
+		//Arrange
+		Vigilante vigilante = new Vigilante(crud);
+		ModeloVehiculo modeloVehiculo = new ModeloVehiculo("EJK426", "C", 1250, "Inactivo");
+		repositorioVehiculo.save(modeloVehiculo);
+		
+		//Act
+		Vehiculo resultado = vigilante.consultarVehiculoPorPlaca("EJK426");
+		
+		//Assert
+		assertNull(resultado);
+		repositorioVehiculo.deleteAll();
+	}
+	
+	@Test
+	public void testConsultarPorPlacaEstadoActivo(){
+		//Arrange
+		Vigilante vigilante = new Vigilante(crud);
+		ModeloVehiculo modeloVehiculo = new ModeloVehiculo("EJK426", "C", 1250, "Activo");
+		repositorioVehiculo.save(modeloVehiculo);
+		
+		//Act
+		Vehiculo resultado = vigilante.consultarVehiculoPorPlaca("EJK426");
+		
+		//Assert
+		Assert.assertNotNull(resultado);
+		repositorioVehiculo.deleteAll();
 	}
 	
 }
