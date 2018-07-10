@@ -1,4 +1,4 @@
-package ceiba.estacionamiento.controlador;
+package ceiba.estacionamiento.persistencia;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ceiba.estacionamiento.dominio.Celda;
 import ceiba.estacionamiento.dominio.CeldaFactory;
 import ceiba.estacionamiento.dominio.Vehiculo;
-import ceiba.estacionamiento.dominio.repositorio.RepositorioVehiculo;
 import ceiba.estacionamiento.modelo.ModeloVehiculo;
+import ceiba.estacionamiento.repositorio.RepositorioVehiculo;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @Service

@@ -13,14 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ceiba.estacionamiento.controlador.Crud;
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Fecha;
 import ceiba.estacionamiento.dominio.Validacion;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
-import ceiba.estacionamiento.dominio.repositorio.RepositorioVehiculo;
 import ceiba.estacionamiento.modelo.ModeloVehiculo;
+import ceiba.estacionamiento.persistencia.Crud;
+import ceiba.estacionamiento.repositorio.RepositorioVehiculo;
 import ceiba.estacionamiento.testdatabuilder.CarroTestDataBuilder;
 import ceiba.estacionamiento.testdatabuilder.MotoTestDataBuilder;
 

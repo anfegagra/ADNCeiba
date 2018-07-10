@@ -8,7 +8,7 @@ import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ceiba.estacionamiento.controlador.Crud;
+import ceiba.estacionamiento.persistencia.Crud;
 
 @Service
 public class Vigilante {

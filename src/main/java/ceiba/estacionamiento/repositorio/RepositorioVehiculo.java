@@ -1,4 +1,4 @@
-package ceiba.estacionamiento.dominio.repositorio;
+package ceiba.estacionamiento.repositorio;
 
 import java.util.List;
 
