@@ -19,10 +19,7 @@ import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.modelo.ModeloVehiculo;
 import ceiba.estacionamiento.repositorio.RepositorioVehiculo;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @Service
-@RestController
-@RequestMapping("/ceiba")
 public class Crud {
 
 	public static final String INACTIVO = "Inactivo";
