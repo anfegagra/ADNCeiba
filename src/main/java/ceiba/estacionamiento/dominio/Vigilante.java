@@ -22,10 +22,7 @@ public class Vigilante {
 	
 	@Autowired
 	Fecha fecha;
-	
-	@Autowired
-	Validacion validacion;
-	
+		
 	@Autowired
 	Cobro cobro;
 	
@@ -33,12 +30,12 @@ public class Vigilante {
 		
 	}
 	
-	public Vigilante(Validacion validacion){
-		this.validacion = validacion;
+	public Vigilante(Fecha fecha){
+		this.fecha = fecha;
 	}
 	
-	public Vigilante(Validacion validacion, Crud crud){
-		this.validacion = validacion;
+	public Vigilante(Fecha fecha, Crud crud){
+		this.fecha = fecha;
 		this.crud = crud;
 	}
 	
@@ -65,10 +62,20 @@ public class Vigilante {
 	public Vehiculo hacerValidaciones(Vehiculo vehiculo) {
 		String placaActualizada = vehiculo.getPlaca().toUpperCase();		
 		vehiculo.setPlaca(placaActualizada);		
-		if (validacion.esPlacaValida(vehiculo.getPlaca()) && crud.validarCeldasDisponibles(vehiculo.getTipo())){			
+		if (esPlacaValida(vehiculo.getPlaca()) && crud.validarCeldasDisponibles(vehiculo.getTipo())){			
 			return crud.registrarVehiculo(vehiculo);			
 		}
 		return null;
+	}
+	
+	public boolean esPlacaValida(String placa) {
+		String primeraLetraPlaca = placa.substring(0, 1);
+		int dia = fecha.obtenerDia(); 
+		if ("A".equals(primeraLetraPlaca)) {			
+			return (dia == 7 || dia == 1);
+		} else {
+			return true;
+		}		
 	}
 	
 	public double registrarSalidaVehiculo(String placa){
@@ -93,4 +100,5 @@ public class Vigilante {
 	public Vehiculo consultarVehiculoPorPlaca(String placa){
 		return crud.consultarPorPlaca(placa);
 	}
+	
 }

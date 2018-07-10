@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Fecha;
-import ceiba.estacionamiento.dominio.Validacion;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
 import ceiba.estacionamiento.modelo.ModeloVehiculo;
@@ -28,10 +27,7 @@ import ceiba.estacionamiento.testdatabuilder.MotoTestDataBuilder;
 @SpringBootTest
 @TestPropertySource(locations="classpath:application-test.properties")
 public class VigilanteTest {
-	
-	@Autowired
-	Validacion validacion;
-	
+		
 	@Autowired
 	Fecha fecha;
 	
@@ -47,7 +43,7 @@ public class VigilanteTest {
 	@Test
 	public void testRegistrarIngresoVehiculoTipoCarro() {
 		//Arrange
-		Vigilante vigilante = new Vigilante(validacion, crud);
+		Vigilante vigilante = new Vigilante(fecha, crud);
 		Vehiculo vehiculo = new CarroTestDataBuilder().withCilindraje(2000).build();
 		
 		//Act		
@@ -66,7 +62,7 @@ public class VigilanteTest {
 			repositorioVehiculo.save(modeloVehiculo);
 		}
 		
-		Vigilante vigilante = new Vigilante(validacion, crud);
+		Vigilante vigilante = new Vigilante(fecha, crud);
 		Vehiculo vehiculo = new CarroTestDataBuilder().withCilindraje(2000).build();
 		
 		//Act		
@@ -80,7 +76,7 @@ public class VigilanteTest {
 	@Test
 	public void testRegistrarIngresoVehiculoTipoMoto() {
 		//Arrange
-		Vigilante vigilante = new Vigilante(validacion, crud);
+		Vigilante vigilante = new Vigilante(fecha, crud);
 		Vehiculo vehiculo = new MotoTestDataBuilder().withCilindraje(600).build();	
 		
 		//Act		
@@ -97,7 +93,7 @@ public class VigilanteTest {
 		ModeloVehiculo modeloVehiculo = new ModeloVehiculo("EJK426", "C", 1250, "Activo");
 		repositorioVehiculo.save(modeloVehiculo);
 		
-		Vigilante vigilante = new Vigilante(validacion, crud);
+		Vigilante vigilante = new Vigilante(fecha, crud);
 		Vehiculo vehiculo = new CarroTestDataBuilder().withPlaca("EJK426").build();	
 		
 		//Act		
@@ -114,7 +110,7 @@ public class VigilanteTest {
 		ModeloVehiculo modeloVehiculo = new ModeloVehiculo("EJK426", "C", 1250, "Inactivo");
 		repositorioVehiculo.save(modeloVehiculo);
 		
-		Vigilante vigilante = new Vigilante(validacion, crud);
+		Vigilante vigilante = new Vigilante(fecha, crud);
 		Vehiculo vehiculo = new CarroTestDataBuilder().withPlaca("EJK426").build();	
 		
 		//Act		

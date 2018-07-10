@@ -1,6 +1,8 @@
 package ceiba.estacionamiento.dominio.unitaria;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
@@ -14,7 +16,6 @@ import org.mockito.Spy;
 
 import ceiba.estacionamiento.dominio.Cobro;
 import ceiba.estacionamiento.dominio.Fecha;
-import ceiba.estacionamiento.dominio.Validacion;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.dominio.Vigilante;
 import ceiba.estacionamiento.persistencia.Crud;
@@ -35,9 +36,6 @@ public class VigilanteTest {
 	@Spy
 	Vigilante spyVigilante;
 		
-	@Mock
-	Validacion mockValidacion;
-	
 	@Before public void initMocks() {
 	       MockitoAnnotations.initMocks(this);
 	}
@@ -73,8 +71,8 @@ public class VigilanteTest {
 		//Arrange
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new MotoTestDataBuilder().withPlaca("ASD12E").build();
-		Vigilante vigilante = new Vigilante(mockValidacion);
-		Mockito.doReturn(false).when(mockValidacion).esPlacaValida(Mockito.anyString());
+		Vigilante vigilante = new Vigilante(mockFecha);
+		Mockito.doReturn(false).when(spyVigilante).esPlacaValida(Mockito.anyString());
 		
 		//Act
 		Vehiculo resultado = vigilante.hacerValidaciones(vehiculo);
@@ -89,8 +87,8 @@ public class VigilanteTest {
 		//Arrange
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
-		Vigilante vigilante = new Vigilante(mockValidacion, mockCrud);
-		Mockito.doReturn(true).when(mockValidacion).esPlacaValida(Mockito.anyString());
+		Vigilante vigilante = new Vigilante(mockFecha, mockCrud);
+		Mockito.doReturn(true).when(spyVigilante).esPlacaValida(Mockito.anyString());
 		Mockito.doReturn(true).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		
 		//Act
@@ -105,8 +103,8 @@ public class VigilanteTest {
 		//Arrange
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
-		Vigilante vigilante = new Vigilante(mockValidacion, mockCrud);
-		Mockito.doReturn(true).when(mockValidacion).esPlacaValida(Mockito.any());
+		Vigilante vigilante = new Vigilante(mockFecha, mockCrud);
+		Mockito.doReturn(true).when(spyVigilante).esPlacaValida(Mockito.any());
 		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		
@@ -123,8 +121,8 @@ public class VigilanteTest {
 		//Arrange
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
-		Vigilante vigilante = new Vigilante(mockValidacion, mockCrud);
-		Mockito.doReturn(true).when(mockValidacion).esPlacaValida(Mockito.anyString());
+		Vigilante vigilante = new Vigilante(mockFecha, mockCrud);
+		Mockito.doReturn(true).when(spyVigilante).esPlacaValida(Mockito.anyString());
 		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		
 		//Act
@@ -140,8 +138,8 @@ public class VigilanteTest {
 		//Arrange
 		Vehiculo esperado = null;
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
-		Vigilante vigilante = new Vigilante(mockValidacion, mockCrud);
-		Mockito.doReturn(true).when(mockValidacion).esPlacaValida(Mockito.anyString());
+		Vigilante vigilante = new Vigilante(mockFecha, mockCrud);
+		Mockito.doReturn(true).when(spyVigilante).esPlacaValida(Mockito.anyString());
 		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		Mockito.doReturn(false).when(mockCrud).validarCeldasDisponibles(Mockito.any());
 		
@@ -150,6 +148,61 @@ public class VigilanteTest {
 		
 		//Assert
 		assertEquals(esperado, resultado);		
+	}
+	
+	@Test
+	public void testEsPlacaValidaEmpiezaConAYLunes() {
+		//Arrange
+		Vigilante vigilante = new Vigilante(mockFecha);
+		String placa = "ASD123";
+		Mockito.doReturn(1).when(mockFecha).obtenerDia();
+		
+		//Act
+		boolean resultado = vigilante.esPlacaValida(placa);
+		
+		//Assert
+		assertTrue(resultado);
+	}
+	
+	@Test
+	public void testEsPlacaValidaEmpiezaConAYDomingo() {
+		//Arrange
+		Vigilante vigilante = new Vigilante(mockFecha);
+		String placa = "ASD123";
+		Mockito.doReturn(7).when(mockFecha).obtenerDia();
+		
+		//Act
+		boolean resultado = vigilante.esPlacaValida(placa);
+		
+		//Assert
+		assertTrue(resultado);
+	}
+	
+	@Test
+	public void testEsPlacaValidaEmpiezaConAYMiercoles() {
+		//Arrange
+		Vigilante vigilante = new Vigilante(mockFecha);
+		String placa = "ASD123";
+		Mockito.doReturn(3).when(mockFecha).obtenerDia();
+		
+		//Act
+		boolean resultado = vigilante.esPlacaValida(placa);
+		
+		//Assert
+		assertFalse(resultado);
+	}
+	
+	@Test
+	public void testEsPlacaValidaNoEmpiezaConA() {
+		//Arrange
+		Vigilante vigilante = new Vigilante(mockFecha);
+		String placa = "BSD123";
+		
+		//Act
+		boolean resultado = vigilante.esPlacaValida(placa);
+		
+		//Assert
+		assertTrue(resultado);
 	}
 	
 	@Test
