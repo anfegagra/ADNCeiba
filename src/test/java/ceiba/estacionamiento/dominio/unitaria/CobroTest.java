@@ -10,6 +10,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import ceiba.estacionamiento.dominio.Cobro;
+import ceiba.estacionamiento.dominio.Tarifa;
+import ceiba.estacionamiento.dominio.TarifaFactory;
 import ceiba.estacionamiento.dominio.Vehiculo;
 import ceiba.estacionamiento.testdatabuilder.MotoTestDataBuilder;
 
@@ -145,12 +147,14 @@ public class CobroTest {
 	@Test
 	public void testCalcularCobroMenorANueveHorasMoto(){
 		//Arrange
+		TarifaFactory tarifaFactory = new TarifaFactory();
+		Tarifa tarifa = tarifaFactory.obtenerTarifa("M", 200);
 		double total = 1500;
 		Duration duracionParqueo = new Duration(0);
 		Mockito.doReturn((long)180).when(spyCobro).obtenerMinutos(Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.calcularCobroMenorANueveHorasMoto(duracionParqueo);
+		double resultado = spyCobro.calcularCobroMenorANueveHoras(duracionParqueo, tarifa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);
@@ -159,12 +163,14 @@ public class CobroTest {
 	@Test
 	public void testCalcularCobroMenorANueveHorasCarro(){
 		//Arrange
+		TarifaFactory tarifaFactory = new TarifaFactory();
+		Tarifa tarifa = tarifaFactory.obtenerTarifa("C", 0);
 		double total = 5000;
 		Duration duracionParqueo = new Duration(0);
 		Mockito.doReturn((long)300).when(spyCobro).obtenerMinutos(Mockito.any());
 		
 		//Act
-		double resultado = spyCobro.calcularCobroMenorANueveHorasCarro(duracionParqueo);
+		double resultado = spyCobro.calcularCobroMenorANueveHoras(duracionParqueo, tarifa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);
@@ -173,13 +179,15 @@ public class CobroTest {
 	@Test
 	public void testCalcularCobroDiasMayorACeroCarro(){
 		//Arrange
+		TarifaFactory tarifaFactory = new TarifaFactory();
+		Tarifa tarifa = tarifaFactory.obtenerTarifa("C", 0);
 		double total = 48000;
 		Duration duracionParqueo = new Duration(0);
 		long cantidadDias = 5;
 		Mockito.doReturn((long)7680).when(spyCobro).obtenerMinutos(duracionParqueo);
 		
 		//Act		
-		double resultado = spyCobro.calcularCobroDiasMayorACeroCarro(duracionParqueo, cantidadDias);
+		double resultado = spyCobro.calcularCobroDiasMayorACero(duracionParqueo, cantidadDias, tarifa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);
@@ -188,13 +196,15 @@ public class CobroTest {
 	@Test
 	public void testCalcularCobroDiasMayorACeroCarroYMenorANueveHoras(){
 		//Arrange
+		TarifaFactory tarifaFactory = new TarifaFactory();
+		Tarifa tarifa = tarifaFactory.obtenerTarifa("C", 0);
 		double total = 11000;
 		Duration duracionParqueo = new Duration(0);
 		long cantidadDias = 1;
 		Mockito.doReturn((long)1561).when(spyCobro).obtenerMinutos(duracionParqueo);
 		
 		//Act		
-		double resultado = spyCobro.calcularCobroDiasMayorACeroCarro(duracionParqueo, cantidadDias);
+		double resultado = spyCobro.calcularCobroDiasMayorACero(duracionParqueo, cantidadDias, tarifa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);
@@ -203,13 +213,15 @@ public class CobroTest {
 	@Test
 	public void testCalcularCobroDiasMayorACeroCarroYMayorANueveHoras(){
 		//Arrange
+		TarifaFactory tarifaFactory = new TarifaFactory();
+		Tarifa tarifa = tarifaFactory.obtenerTarifa("C", 0);
 		double total = 16000;
 		Duration duracionParqueo = new Duration(0);
 		long cantidadDias = 1;
-		Mockito.doReturn((long)1920).when(spyCobro).obtenerMinutos(duracionParqueo);
+		Mockito.doReturn((long)2040).when(spyCobro).obtenerMinutos(duracionParqueo);
 		
 		//Act		
-		double resultado = spyCobro.calcularCobroDiasMayorACeroCarro(duracionParqueo, cantidadDias);
+		double resultado = spyCobro.calcularCobroDiasMayorACero(duracionParqueo, cantidadDias, tarifa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);
@@ -218,13 +230,15 @@ public class CobroTest {
 	@Test
 	public void testCalcularCobroDiasMayorACeroMotoYMenorANueveHoras(){
 		//Arrange
+		TarifaFactory tarifaFactory = new TarifaFactory();
+		Tarifa tarifa = tarifaFactory.obtenerTarifa("M", 200);
 		double total = 5500;
 		Duration duracionParqueo = new Duration(0);
 		long cantidadDias = 1;
 		Mockito.doReturn((long)1620).when(spyCobro).obtenerMinutos(duracionParqueo);
 		
 		//Act		
-		double resultado = spyCobro.calcularCobroDiasMayorACeroMoto(duracionParqueo, cantidadDias);
+		double resultado = spyCobro.calcularCobroDiasMayorACero(duracionParqueo, cantidadDias, tarifa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);
@@ -233,13 +247,15 @@ public class CobroTest {
 	@Test
 	public void testCalcularCobroDiasMayorACeroMotoYMayorANueveHoras(){
 		//Arrange
+		TarifaFactory tarifaFactory = new TarifaFactory();
+		Tarifa tarifa = tarifaFactory.obtenerTarifa("M", 200);
 		double total = 8000;
 		Duration duracionParqueo = new Duration(0);
 		long cantidadDias = 1;
 		Mockito.doReturn((long)1980).when(spyCobro).obtenerMinutos(duracionParqueo);
 		
 		//Act		
-		double resultado = spyCobro.calcularCobroDiasMayorACeroMoto(duracionParqueo, cantidadDias);
+		double resultado = spyCobro.calcularCobroDiasMayorACero(duracionParqueo, cantidadDias, tarifa);
 		
 		//Assert
 		assertEquals(total, resultado, 0);

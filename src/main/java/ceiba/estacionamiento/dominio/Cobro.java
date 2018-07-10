@@ -42,7 +42,7 @@ public class Cobro {
 			if(cantidadDias > 0) {
 				return calcularCobroDiasMayorACero(duracionParqueo, cantidadDias, tarifa);			
 			} else {				
-				return valorDiaCarro;
+				return tarifa.getValorDia();
 			}
 		}
 	}
