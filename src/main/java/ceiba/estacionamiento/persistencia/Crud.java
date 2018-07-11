@@ -29,19 +29,17 @@ public class Crud {
 		ModeloVehiculo modeloVehiculo = new ModeloVehiculo(vehiculo.getPlaca(), vehiculo.getTipo(),
 				vehiculo.getCilindraje(), vehiculo.getEstado());
 		ModeloVehiculo resultadoInsercion = null;
-
-		if(obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca()) != null) {
-			
-			ModeloVehiculo vehiculoActualizado = obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca());
+		ModeloVehiculo vehiculoActualizado = obtenerVehiculoPorPlaca(modeloVehiculo.getPlaca());
+		if(vehiculoActualizado != null) {			
 			if(vehiculoActualizado.getEstado().equals(INACTIVO)){
 				vehiculoActualizado.setEstado(ACTIVO);
-				DateTime dt = new DateTime();
-				vehiculoActualizado.setFechaIngreso(dt.toDate());
+				DateTime dateTime = new DateTime();
+				vehiculoActualizado.setFechaIngreso(dateTime.toDate());
 				resultadoInsercion = repositorioVehiculo.save(vehiculoActualizado);
 				return convertirADominio(resultadoInsercion);
 			} else {
 				return null;
-			}			
+			}
 		} else {
 			resultadoInsercion = repositorioVehiculo.save(modeloVehiculo);
 			return convertirADominio(resultadoInsercion);
